@@ -1,0 +1,13 @@
+---
+title: "Proyecto"
+author: "Grupo Finanzas Públicas"
+date: "2025-11-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Deuda Pública
+
