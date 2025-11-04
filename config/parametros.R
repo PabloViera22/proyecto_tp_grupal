@@ -7,8 +7,8 @@
 # CONFIGURACIÓN GLOBAL DEL PROYECTO
 # =============================================================================#
 # LIBRERÍAS DEL PROYECTO
-library(renv)
 library(here)
+library(WDI)
 library(tidyverse)
 library(readxl)
 library(lubridate)
@@ -62,6 +62,6 @@ mensaje_exito("Configuración cargada correctamente")
 
 ##Carga de configuración en cada script
 # Inicio de cada script
-source(here::here("Config", "parametros.R"))
+source(here::here("config", "parametros.R"))
 
 
