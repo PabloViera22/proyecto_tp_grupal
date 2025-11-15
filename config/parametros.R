@@ -6,6 +6,14 @@
 # =============================================================================#
 # CONFIGURACIÓN GLOBAL DEL PROYECTO
 # =============================================================================#
+# LIMPIAR ENTORNO
+rm(list = ls())
+
+# CONFIGURAR OPCIONES GLOBALES
+options(stringsAsFactors = FALSE)
+options(scipen = 999)  # Evitar notación científica
+options(digits = 2) # Decimales a mostrar 
+
 # LIBRERÍAS DEL PROYECTO
 library(here)
 library(WDI)
@@ -13,13 +21,6 @@ library(tidyverse)
 library(readxl)
 library(lubridate)
 library(scales)
-
-# LIMPIAR ENTORNO
-rm(list = ls())
-# CONFIGURAR OPCIONES GLOBALES
-options(stringsAsFactors = FALSE)
-options(scipen = 999)  # Evitar notación científica
-options(digits = 2) # Decimales a mostrar
 
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
@@ -62,6 +63,6 @@ mensaje_exito("Configuración cargada correctamente")
 
 ##Carga de configuración en cada script
 # Inicio de cada script
-source(here::here("config", "parametros.R"))
+
 
 
