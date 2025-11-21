@@ -33,6 +33,12 @@ datos<- WDI(country = paises,indicator = indicadores,
             start = 2018, 
             end = 2024)
 datos
+
+#==============================================================================#
+# 
+#==============================================================================#
+
+
 # El banco mundial carece de informacion sobre la deuda publica la recaudacion y
 #sobre la inflación.
 
@@ -40,3 +46,18 @@ countries <- wb_countries()
 codigos_paises <- countries[, c("country", "iso2c", "iso3c", "region")]
 head(codigos_paises)
 paises<-c(chile="CHL", colombia="COL", argentina="ARG", brasil="BRA")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
