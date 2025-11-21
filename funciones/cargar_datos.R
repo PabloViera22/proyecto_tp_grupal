@@ -1,10 +1,18 @@
 source(here::here("config", "parametros.R"))
 
-indicadores<-c("Deuda_del_Gob"="GC.DOD.TOTL.GD.ZS", 
-               "Tasa_Crecimiento_PBI"="NY.GDP.MKTP.KD.ZG", 
-               "Recaudacion"="GC.TAX.TOTL.GD.ZS", 
-               "IPC"="FP.CPI.TOTL.ZG")
+# Librerias
+library(tidyverse)
+library(WDI)
+
+indicadores <- c("deuda_gob" = "GC.DOD.TOTL.GD.ZS", 
+               "crecimiento_pbi" = "NY.GDP.MKTP.KD.ZG", 
+               "recaudacion" = "GC.TAX.TOTL.GD.ZS", 
+               "ipc" = "FP.CPI.TOTL.ZG",
+               "pbi_constante" = "NY.GDP.MKTP.KN",
+               "pbi_corriente" = "NY.GDP.MKTP.CD")
+
 # Lista de Países por continente y nivel economico
+
 africa_bajos  <- c("NER","ETH","COD")
 africa_medios <- c("KEN","GHA","ZAF")
 africa_altos  <- c("MUS")
@@ -13,23 +21,22 @@ latam_medios <- c("BOL","HND","PER","MEX")
 latam_altos  <- c("CHL","URY","USA","CAN")
 asia_bajos  <- c("AFG","NPL","BGD")
 asia_medios <- c("IND","VNM","PHL","CHN")
-asia_altos  <- c("KOR","JPN","SGP")
+asia_altos <- c("KOR","JPN","SGP")
 europa_bajos  <- c("UKR")
 europa_medios <- c("MDA","ALB","SRB","ROU")
 europa_altos  <- c("DEU","FRA","ESP","ITA","SWE","DNK")
 oceania_medios <- c("FJI")
 oceania_altos  <- c("AUS","NZL")
 
-africa<-c(africa_bajos, africa_medios, africa_altos)
-latam<-c(latam_bajos, latam_medios, latam_altos)
-asia<-c(asia_bajos, asia_medios, asia_altos)
-europa<-c(europa_bajos, europa_medios, europa_altos)
-oceania<-c( oceania_medios, oceania_altos)
+africa <- c(africa_bajos, africa_medios, africa_altos)
+latam <- c(latam_bajos, latam_medios, latam_altos)
+asia <- c(asia_bajos, asia_medios, asia_altos)
+europa <- c(europa_bajos, europa_medios, europa_altos)
+oceania <- c(oceania_medios, oceania_altos)
 
 paises <- c(africa, latam, asia, europa, oceania)
 
-
-datos<- WDI(country = paises,indicator = indicadores,
+datos <- WDI(country = paises, indicator = indicadores,
             start = 2018, 
             end = 2024)
 datos
@@ -39,13 +46,13 @@ datos
 #==============================================================================#
 
 
-# El banco mundial carece de informacion sobre la deuda publica la recaudacion y
-#sobre la inflación.
+# El banco mundial carece de informacion sobre la deuda publica la recaudacion e inflación.
 
 countries <- wb_countries()
 codigos_paises <- countries[, c("country", "iso2c", "iso3c", "region")]
 head(codigos_paises)
 paises<-c(chile="CHL", colombia="COL", argentina="ARG", brasil="BRA")
+
 
 
 
