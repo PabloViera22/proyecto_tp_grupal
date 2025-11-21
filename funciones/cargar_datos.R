@@ -51,7 +51,20 @@ datos
 countries <- wb_countries()
 codigos_paises <- countries[, c("country", "iso2c", "iso3c", "region")]
 head(codigos_paises)
-paises<-c(chile="CHL", colombia="COL", argentina="ARG", brasil="BRA")
+paises <- c(chile="CHL", colombia="COL", argentina="ARG", brasil="BRA")
+
+options(scipen = 999) # Desactiva la notación científica para los PBI
+
+# PBI expresado a miles de millones
+
+datos$pbi_constante <- datos$pbi_constante / 1e9
+datos$pbi_corriente <- datos$pbi_corriente / 1e9
+
+# Redondeo de todas las variables
+
+datos <- datos %>%
+  mutate(across(c(deuda_gob, crecimiento_pbi, recaudacion, ipc, pbi_constante, pbi_corriente), 
+                round, digits = 2))
 
 
 
