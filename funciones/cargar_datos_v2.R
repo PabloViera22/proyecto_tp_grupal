@@ -23,7 +23,7 @@ indicadores <- c("deuda_gob" = "GC.DOD.TOTL.GD.ZS",
                  "pbi_corriente" = "NY.GDP.MKTP.CD")
 
 paises_ocde <- c(
-  "AR",  # Argentina
+  "AR", # Argentina
   "DE", # Alemania
   "AU", # Australia
   "AT", # Austria
