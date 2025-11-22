@@ -33,6 +33,16 @@ filtrado_na<-filtrado_2015%>%
   filter(region!=	"Aggregates")
 
 
+#lo exportamos a la carpeta procesed
+ruta_completa_filtrado<- file.path(dir_data_processed, "csv_paises_filtrado")
+
+write.csv(
+  x = filtrado_na,          # Tu data.frame a exportar
+  file = ruta_completa_filtrado,      # La ruta completa del archivo
+  row.names = FALSE,         # Evita incluir los números de fila como una columna
+  fileEncoding = "UTF-8"     # Codificación para manejar acentos y caracteres especiales
+)
+
 #==============================================================================#
 # Voy a hacer un gráfico de dispersión de deuda publica y crecimietno del pbi 
 #por contintente
