@@ -1,15 +1,14 @@
 # Analisis de NA
 analisar_na<-read_csv(ruta_completa)
 
+
 # 1. Definir las columnas de datos que quieres revisar (excluyendo 'country', 'iso2c', 'iso3c', 'year')
 # Ajusta los nombres de las columnas si son diferentes en tu data frame real.
 columnas_a_revisar <- c("deuda_gob", "crecimiento_pbi", "recaudacion", "ipc", "pbi_constante")
-
 # 2. Agrupar por el año y sumar los NAs en las columnas seleccionadas
 resumen_na_por_año <- datos %>%
   # Agrupar las filas por el año
   group_by(year) %>%
-  
   # Para cada año, calcular la suma de NAs en cada columna
   summarise(
     # La expresión sum(is.na(nombre_columna)) cuenta cuántos TRUE (NA) hay
@@ -23,12 +22,15 @@ resumen_na_por_año <- datos %>%
 # 3. Mostrar el resultado
 print(resumen_na_por_año)
 
-
 #==============================================================================#
 # Resultados: 2015 es el año con menos faltantes, uso ese año
 #==============================================================================#
 filtrado_2015<-analisar_na%>%filter(year==2015)
-filtrado_na<-filtrado_2015%>%filter(!is.na(deuda_gob))%>%mutate(pbi_constante_en_milmillones=pbi_constante/ 1e9)%>%mutate(log_pbi=log(pbi_constante_en_milmillones))
+filtrado_na<-filtrado_2015%>%
+  filter(!is.na(deuda_gob))%>%
+  mutate(pbi_constante_en_milmillones=pbi_constante/ 1e9)%>%
+  mutate(log_pbi=log(pbi_constante_en_milmillones))%>%
+  filter(region!=	"Aggregates")
 
 
 #==============================================================================#
@@ -121,17 +123,69 @@ print(grafico_dispersion_por_region) #los que dicen agregates no son paises, sin
 
 
 
+#==============================================================================#
+# Gráfico de dispersión de deuda publica y inflacion
+#==============================================================================#
+grafico_dispersion_ipc<- ggplot(
+  data = filtrado_na, 
+  # CLAVE: Añadir 'color = region' dentro de aes()
+  aes(x = ipc, y = deuda_gob, color = region)
+) +
+  # Añade la capa de puntos. Ya no necesitas especificar color="darkblue" aquí
+  geom_point(alpha = 0.6) + 
+  
+  # Añade una línea de tendencia (regresión lineal) general.
+  # Si quieres una línea por cada región, pon color = region también en geom_smooth
+  geom_smooth(method = "lm", se = FALSE) + 
+  
+  # Etiquetado y títulos
+  labs(
+    title = "Relación entre Deuda del Gobierno y IPC, por Ingreso",
+    x = "ipc",
+    y = "Deuda del Gobierno (% del PBI)",
+    color = "Región WDI", # Título para la leyenda de color
+    caption = "Fuente: Datos del Banco Mundial (WDI)"
+  ) +
+  # Temas para darle un aspecto más limpio
+  theme_classic()
+
+# 3. Muestra el gráfico
+print(grafico_dispersion_ipc) #los que dicen agregates no son paises, sino agregados de países
 
 
 
 
+#==============================================================================#
+# Gráfico de dispersión de deuda publica y recaudacion en porcentaje del pbi
+#==============================================================================#
+grafico_dispersion_deuda_recaudacion <- ggplot(
+  data = filtrado_na, 
+  # CLAVE: Cambiar 'ipc' por 'recaudacion_tributaria' en el eje X
+  aes(x = recaudacion, y = deuda_gob)
+) +
+  # Añade la capa de puntos.
+  geom_point(alpha = 0.6) + 
+  
+  # Añade una línea de tendencia (regresión lineal) general, diferenciada por región.
+  # El color de la línea se diferencia automáticamente gracias a 'color = region' en el aes() principal
+  geom_smooth(method = "lm", se = FALSE) + 
+  
+  # Etiquetado y títulos
+  labs(
+    # Título nuevo
+    title = "Relación entre Deuda Pública y Recaudación Tributaria, por Región",
+    # Eje X nuevo
+    x = "Recaudación Tributaria (% del PIB)",
+    # Eje Y sin cambios (asumiendo que 'deuda_gob' es la Deuda Pública)
+    y = "Deuda Pública (% del PIB)",
+    color = "Región WDI", # Título para la leyenda de color
+    caption = "Fuente: Datos del Banco Mundial (WDI)"
+  ) +
+  # Temas para darle un aspecto más limpio
+  theme_classic()
 
-
-
-
-
-
-
+# 3. Muestra el gráfico
+print(grafico_dispersion_deuda_recaudacion)
 
 
 
