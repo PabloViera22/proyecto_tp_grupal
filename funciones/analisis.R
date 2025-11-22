@@ -30,7 +30,10 @@ filtrado_na<-filtrado_2015%>%
   filter(!is.na(deuda_gob))%>%
   mutate(pbi_constante_en_milmillones=pbi_constante/ 1e9)%>%
   mutate(log_pbi=log(pbi_constante_en_milmillones))%>%
-  filter(region!=	"Aggregates")
+  filter(region!=	"Aggregates")%>%
+  mutate(pbi_percapita=pbi_constante/poblacion_total
+         )
+
 
 
 #lo exportamos a la carpeta procesed

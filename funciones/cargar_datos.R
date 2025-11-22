@@ -5,7 +5,8 @@ indicadores <- c("deuda_gob" = "GC.DOD.TOTL.GD.ZS",
                  "recaudacion" = "GC.TAX.TOTL.GD.ZS", 
                  "ipc" = "FP.CPI.TOTL.ZG",
                  "pbi_constante" = "NY.GDP.MKTP.KD",
-                 "region")
+                 "region",
+                 "poblacion_total"="SP.POP.TOTL")
 
 # Lista de Países por continente
 africa <- c("NER", "ETH", "COD", "KEN", "GHA", "ZAF", "MUS")
@@ -49,7 +50,6 @@ write.csv(
 datos_dos_digitos <- datos %>%
   mutate(across(c(deuda_gob, crecimiento_pbi, recaudacion, ipc, pbi_constante, pbi_corriente), 
                 round, digits = 2))
-
 
 
 
