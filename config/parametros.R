@@ -21,6 +21,7 @@ library(tidyverse)
 library(readxl)
 library(lubridate)
 library(scales)
+library(readr)
 
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
