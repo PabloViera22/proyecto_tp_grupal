@@ -19,9 +19,31 @@ datos3 <- WDI(country = "all", indicator = indicadores3,
 datos3
 
 
+#==============================================================================#
+#            ANALISIS DE DATOS PERDIDOS PARA PAISES                            #
+#==============================================================================#
+# 1. Aplicar miss_var_summary() a tu data frame
+conteo_na_por_columna2 <- datos3 %>% 
+  miss_var_summary() 
 
+# 2. Mostrar solo el nombre de la variable y el conteo de NA
+conteo_na_por_columna2 %>%
+  select(variable, n_miss) %>%
+  print(n = Inf) # 'print(n = Inf)' para ver todas las filas si hay muchas columnas
+nrow(datos3)
 
+#VARIABLE DE OCURRENCIA
+# Matriz de patrones usando VIM
+variables_key <- c("deuda_gob", "interes_real", "formacion_bruta_capital", "consumo_gobierno","apertura")
 
+aggr(datos3[, variables_key],
+     col = c('steelblue', 'red'), 
+     numbers = TRUE,
+     sortVars = TRUE,
+     labels = variables_key,
+     cex.axis = 0.8,
+     gap = 3,
+     ylab = c("Proporción de faltantes", "Patrón de combinación"))
 
 
 
