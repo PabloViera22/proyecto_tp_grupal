@@ -26,6 +26,11 @@ library(readr)
 library(naniar) 
 library(eurostat)
 library(VIM)
+library(mice)         # Imputación múltiple
+library(Hmisc)        # Herramientas estadísticas
+library(kableExtra)   # Tablas mejoradas
+library(patchwork)    # Combinar gráficos
+library(ggpubr)   
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
   proyecto_tp_grupal <- here::here()  # Usa el paquete 'here'
