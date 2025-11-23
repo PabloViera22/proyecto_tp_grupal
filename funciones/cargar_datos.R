@@ -45,11 +45,51 @@ write.csv(
   fileEncoding = "UTF-8"     # Codificación para manejar acentos y caracteres especiales
 )
 
-# Redondeo de todas las variables
+#==============================================================================#
+#        HACER OTRO CSV CON DATOS DE PAISES DE EUROPA PARA NUEVO ANALISIS      #
+#==============================================================================#
+indicadores2 <- c(
+  "GC.DOD.TOTL.GD.ZS",   # DEBT (Central government debt)
+  "NY.GDP.MKTP.KD.ZG",   # GDP_GROWTH (GDP growth (annual %))
+  "NY.GDP.PCAP.KD",      # GDP_P_C (GDP per capita - Constant US$)
+  "NE.TRD.GNFS.ZS",      # OPENNESS (Trade (% of GDP))
+  "NE.GDI.FTOT.ZS",      # LTOTAL (Inversión - Gross capital formation)
+  "NE.CON.GOVT.ZS",      # GOV_EXPEND (Government consumption)
+  "FR.INR.RINR",         # Interest rate (Real interest rate)
+  "NY.GDP.DEFL.KD.ZG",   # Inflation (GDP deflator (annual %))
+  "SP.POP.GROW"          # Population growth
+)
+paises2 <- c("ALB", "DEU", "AND", "AUT", "BEL", "BLR",
+              "BIH", "BGR", "CZE", "CYP", "HRV",
+              "DNK", "SVK", "SVN", "ESP", "EST", "FIN",
+              "FRA", "GBR", "GRC", "NLD", "HUN", "ITA",
+              "IRL", "ISL", "LVA", "LIE", "LTU", "LUX",
+              "MKD", "MDA", "MLT", "MCO", "NOR", "POL",
+              "PRT", "ROU", "RUS", "SMR", "SRB", "MNE",
+              "SWE", "CHE", "UKR", "UZB")
 
-datos_dos_digitos <- datos %>%
-  mutate(across(c(deuda_gob, crecimiento_pbi, recaudacion, ipc, pbi_constante, pbi_corriente), 
-                round, digits = 2))
+datos2 <- WDI(country = paises2, indicator = indicadores2,
+             start = 2000, 
+             end = 2024)
+
+# exportar a RAW
+ruta_completa2<- file.path(dir_data_raw, "csv_paises2")
+
+datos2_con_ingreso <- datos2 %>%
+  left_join(meta_continente, by = "iso3c")
+
+write.csv(
+  x = datos2_con_ingreso,          # Tu data.frame a exportar
+  file = ruta_completa2,      # La ruta completa del archivo
+  row.names = FALSE,         # Evita incluir los números de fila como una columna
+  fileEncoding = "UTF-8"     # Codificación para manejar acentos y caracteres especiales
+)
+
+
+
+
+
+
 
 
 

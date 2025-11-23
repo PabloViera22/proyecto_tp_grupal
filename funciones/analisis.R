@@ -201,6 +201,48 @@ grafico_dispersion_deuda_recaudacion <- ggplot(
 print(grafico_dispersion_deuda_recaudacion)
 
 
+#==============================================================================#
+#            ANALISIS DE DATOS PERDIDOS PARA PAISES EUROPEOS                   #
+#==============================================================================#
+# Analisis de NA
+analisar_na2<-read_csv(ruta_completa2)
+analisar_datos2_nombres<-analisar_na2%>%rename(
+  "Deuda_Gobierno" = "GC.DOD.TOTL.GD.ZS",   # Deuda del gobierno central (% del PIB)
+  "Crecimiento_PIB" = "NY.GDP.MKTP.KD.ZG",   # Crecimiento del PIB (anual %)
+  "PIB_Per_Capita" = "NY.GDP.PCAP.KD",      # PIB per cápita (USD constantes)
+  "Apertura_Comercial" = "NE.TRD.GNFS.ZS",      # Comercio (% del PIB)
+  "Formacion_Capital" = "NE.GDI.FTOT.ZS",      # Formación bruta de capital (% del PIB)
+  "Gasto_Gobierno" = "NE.CON.GOVT.ZS",      # Consumo del gobierno (% del PIB)
+  "Tasa_Interes_Real" = "FR.INR.RINR",         # Tasa de interés real
+  "Inflacion_Deflactor" = "NY.GDP.DEFL.KD.ZG",   # Deflactor del PIB (anual %)
+  "Crecimiento_Poblacion" = "SP.POP.GROW"          # Crecimiento de la población (anual %)
+)
+
+# 1. Aplicar miss_var_summary() a tu data frame
+conteo_na_por_columna <- analisar_datos2_nombres %>% 
+  miss_var_summary() 
+
+# 2. Mostrar solo el nombre de la variable y el conteo de NA
+conteo_na_por_columna %>%
+  select(variable, n_miss) %>%
+  print(n = Inf) # 'print(n = Inf)' para ver todas las filas si hay muchas columnas
+nrow(analisar_datos2_nombres)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

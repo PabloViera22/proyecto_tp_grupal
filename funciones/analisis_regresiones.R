@@ -42,6 +42,6 @@ for (x in vector_x) {
   print(summary(modelo_regresion_2))
 }
 
-modelo_regresion_multiple<-lm(deuda_gob ~ crecimiento_pbi + recaudacion+pbi_percapita , data = analizar_na)
+modelo_regresion_multiple<-lm(pbi_percapita ~ deuda_gob + recaudacion+ipc , data = analizar_na)
 print(summary(modelo_regresion_multiple))
 

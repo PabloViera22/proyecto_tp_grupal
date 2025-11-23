@@ -14,6 +14,7 @@ options(stringsAsFactors = FALSE)
 options(scipen = 999)  # Evitar notación científica
 options(digits = 2) # Decimales a mostrar 
 
+
 # LIBRERÍAS DEL PROYECTO
 library(here)
 library(WDI)
@@ -22,7 +23,8 @@ library(readxl)
 library(lubridate)
 library(scales)
 library(readr)
-
+library(naniar) 
+library(eurostat)
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
   proyecto_tp_grupal <- here::here()  # Usa el paquete 'here'
