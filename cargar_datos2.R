@@ -172,7 +172,7 @@ resumen_modelos %>%
 
 
 #==============================================================================#
-# IMPUTACION USANDO MULTIPLE
+# IMPUTACION MULTIPLE
 #==============================================================================#
 # Seleccionar variables para imputación
 vars_mice <- datos_filtrados_final %>%
@@ -192,19 +192,41 @@ print(mice_imp$method)
 # aca estan los datos imputados
 datos_imp_mice <- complete(mice_imp, 1)
 
+#==============================================================================#
+# DATOS COMPLETOS
+#==============================================================================#
+# 1. Definir las columnas a actualizar
+vars_a_actualizar <- c("consumo_gobierno", "apertura", "formacion_bruta_capital", "interes_real")
+
+# 2. Reemplazar los NA en la tabla original con los valores imputados de 'datos_imp_mice'
+datos_completos <- datos_filtrados_final %>%
+  mutate(
+    # Usamos 'across' para aplicar la misma lógica a todas las variables en la lista
+    across(
+      .cols = all_of(vars_a_actualizar),
+      
+      # Lógica: Si el valor original es NA, usa el valor de la columna imputada
+      ~ coalesce(
+        .x, # El valor original (puede ser NA)
+        datos_imp_mice[[cur_column()]] # El valor correspondiente de la tabla imputada
+      )))
+
+#==============================================================================#
+# ANALISIS DE LINEALIDAD Y TODO ESO
+#==============================================================================#
+
+modelo_lineal <- lm( crecimiento_pbi~ deuda_gob + apertura + formacion_bruta_capital + 
+                      consumo_gobierno + interes_real + inflacion, data = datos_completos)
+summary(modelo_lineal)
+plot(modelo_lineal) # Diagnóstico
+
+resettest(modelo_lineal)
+# NO HAY LINEALIDAD, EL MODELO LINEAL NO ES SUFICIENTE
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+install.packages("mgcv")
+library(mgcv)
+modelo_gam<-gam(crecimiento_pbi~ s(deuda_gob) + s(apertura) + s(formacion_bruta_capital) + 
+                 s(consumo_gobierno) + s(interes_real) + s(inflacion), data = datos_completos)
+summary(modelo_gam)
 
