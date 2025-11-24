@@ -17,7 +17,12 @@ datos3 <- WDI(country = "all", indicator = indicadores3,
              start = 1990, 
              end = 2024)
 datos3
-
+write.csv(
+  x = datos3,          # Tu data.frame a exportar
+  file = file.path(dir_data_raw, "csv_datos3"),      # La ruta completa del archivo
+  row.names = FALSE,         # Evita incluir los números de fila como una columna
+  fileEncoding = "UTF-8"     # Codificación para manejar acentos y caracteres especiales
+)
 
 #==============================================================================#
 #            ANALISIS DE DATOS PERDIDOS PARA PAISES                            #
@@ -212,21 +217,197 @@ datos_completos <- datos_filtrados_final %>%
       )))
 
 #==============================================================================#
+# DETECCION DE OUTLIERS
+#==============================================================================#
+cuartiles <- quantile(datos_completos$crecimiento_pbi, probs = c(0.25, 0.75))
+Q1 <- cuartiles[1]
+Q3 <- cuartiles[2]
+
+# 2. Calcular el IQR
+IQR_valor <- IQR(datos_completos$crecimiento_pbi)
+
+# 3. Definir los límites
+limite_inferior <- Q1 - 1.5 * IQR_valor
+limite_superior <- Q3 + 1.5 * IQR_valor
+
+outliers <- datos_completos$crecimiento_pbi[
+  datos_completos$crecimiento_pbi < limite_inferior | 
+    datos_completos$crecimiento_pbi > limite_superior]
+print(outliers)
+
+# eliminar outliers
+datos_completos_sin_outliers <- datos_completos[
+  datos_completos$crecimiento_pbi >= limite_inferior & 
+    datos_completos$crecimiento_pbi <= limite_superior, 
+]
+nrow(datos_completos_sin_outliers)
+nrow(datos_completos)
+
+
+
+#==============================================================================#
 # ANALISIS DE LINEALIDAD Y TODO ESO
 #==============================================================================#
 
 modelo_lineal <- lm( crecimiento_pbi~ deuda_gob + apertura + formacion_bruta_capital + 
-                      consumo_gobierno + interes_real + inflacion, data = datos_completos)
+                      consumo_gobierno + interes_real + inflacion, data = datos_completos_sin_outliers)
 summary(modelo_lineal)
-plot(modelo_lineal) # Diagnóstico
+
 
 resettest(modelo_lineal)
 # NO HAY LINEALIDAD, EL MODELO LINEAL NO ES SUFICIENTE
 
 
-install.packages("mgcv")
 library(mgcv)
 modelo_gam<-gam(crecimiento_pbi~ s(deuda_gob) + s(apertura) + s(formacion_bruta_capital) + 
-                 s(consumo_gobierno) + s(interes_real) + s(inflacion), data = datos_completos)
+                 s(consumo_gobierno) + s(interes_real) + s(inflacion), data = datos_completos_sin_outliers)
 summary(modelo_gam)
+
+AIC(modelo_lineal, modelo_gam)
+BIC(modelo_lineal, modelo_gam)
+
+
+#==============================================================================#
+# POR ULTIMO, VEO EL MODELO DE PAPER A VER QUE ONDA CAPAZ TENGO SUERTE
+#==============================================================================#
+library(plm)
+
+pstr_modelo
+# NO SE PUDO, QUELE VAMO A HACER
+
+datos_completos_sin_outliers$deuda2 <- datos_completos_sin_outliers$deuda_gob^2
+
+
+modelo_nl <- lm(crecimiento_pbi~ deuda_gob + deuda2 + apertura +
+                  formacion_bruta_capital + 
+                  consumo_gobierno + interes_real + inflacion, data = datos_completos_sin_outliers)
+summary(modelo_nl)
+
+
+datos_completos_sin_outliers$prediccion<-predict(modelo_lineal, newdata = NULL, type = "response", se.fit = FALSE)
+
+
+ggplot(data = datos_completos_sin_outliers, aes(x = crecimiento_pbi, y = prediccion)) +
+  geom_point (color = "blue") +
+  # Usar la variable original (crecimiento_pbi) para los puntos
+  geom_point(aes(y = crecimiento_pbi), alpha = 0.4) +
+  labs(
+    title = "Predicción del PBI vs. Deuda de Gobierno",
+    y = "Crecimiento PBI (Predicción y Real)",
+    x = "Deuda de Gobierno"
+  )
+
+
+modelo_lineal_basico <- lm( crecimiento_pbi~ deuda_gob + deuda2, data = datos_completos_sin_outliers)
+summary(modelo_lineal_basico)
+
+#==============================================================================#
+# VOY A PROBAR EL MODELO CON DATOS SEGUN CONTINENTE E INGRESO, SUERTE POR FAVOR
+#==============================================================================#
+datos_completos_sin_outliers
+
+# meta datos
+meta <- WDI_data$country
+meta_continente<-meta%>%select("iso3c","region", "income")
+# agregamos
+datos_completos_income_continente <- datos_completos_sin_outliers %>%
+  left_join(meta_continente, by = "iso3c")
+
+vector_x<-c("High income", "Low income", "Lower middle income", "Upper middle income")
+for (x in vector_x) {
+  nuevo<-datos_completos_income_continente%>% filter(income==x)
+  #para crecimiento y deuda
+  modelo_regresion <- lm( crecimiento_pbi~ deuda_gob + apertura + formacion_bruta_capital + 
+                                             consumo_gobierno + interes_real + inflacion, data = datos_completos_sin_outliers)
+  
+  #para recaudacion y deuda
+  modelo_regresion_2 <- lm(crecimiento_pbi~ deuda_gob + deuda2 + apertura + formacion_bruta_capital + 
+                             consumo_gobierno + interes_real + inflacion, data = datos_completos_sin_outliers)
+  # los print
+  print(x)
+  print("#================#crecimietno y deuda #================#")
+  print(summary(modelo_regresion))
+  print("#================#agrego deuda^2#================#")
+  print(summary(modelo_regresion_2))
+
+}
+
+datos_completos_sin_agregados<-datos_completos_income_continente%>%filter(region!="Aggregates")
+vector_y<- c("East Asia & Pacific", "Europe & Central Asia", "Latin America & Caribbean",
+            "Middle East & North Africa", "North America", "South Asia", "Sub-Saharan Africa"
+            )
+for (x in vector_y) {
+  nuevo<-datos_completos_income_continente%>% filter(region==x)
+  #para crecimiento y deuda
+  modelo_regresion <- lm( crecimiento_pbi~ deuda_gob + apertura + formacion_bruta_capital + 
+                            consumo_gobierno + interes_real + inflacion, data = datos_completos_sin_outliers)
+  
+  #para recaudacion y deuda
+  modelo_regresion_2 <- lm(crecimiento_pbi~ deuda_gob + deuda2 + apertura + formacion_bruta_capital + 
+                             consumo_gobierno + interes_real + inflacion, data = datos_completos_sin_outliers)
+  # los print
+  print(x)
+  print("#================#crecimietno y deuda #================#")
+  print(summary(modelo_regresion))
+  print("#================#agrego deuda^2#================#")
+  print(summary(modelo_regresion_2))
+  
+}
+
+for (x in vector_y) {
+  nuevo<-datos_completos_income_continente%>% filter(region==x)
+  #para crecimiento y deuda
+  modelo_regresion <- lm( crecimiento_pbi~ deuda_gob, data = datos_completos_sin_outliers)
+  
+  #para recaudacion y deuda
+  modelo_regresion_2 <- lm(crecimiento_pbi~ deuda_gob + deuda2, data = datos_completos_sin_outliers)
+  # los print
+  print(x)
+  print("#================#crecimietno y deuda #================#")
+  print(summary(modelo_regresion))
+  print("#================#agrego deuda^2#================#")
+  print(summary(modelo_regresion_2))
+  
+}
+
+
+
+
+
+modelo_nl <- lm(deuda_gob~ interes_real, data = datos_completos_sin_outliers)
+summary(modelo_nl)
+
+
+#==============================================================================#
+# MODELO CON LOS DATOS DE GERO
+#==============================================================================#
+gero <- read.csv2("D:/Proyecto_Git_TP_Grupal/proyecto_tp_grupal/data/raw/deuda_deficit.csv")
+gero
+
+
+ajuste_para_join<-datos_completos_sin_outliers %>%
+  rename(paises = country)%>% filter(year==2023)
+
+# data + meta(continente)
+datos_join <- ajuste_para_join %>%
+  left_join(gero, by = "paises")
+
+
+modelo_nl <- lm(crecimiento_pbi~ deuda_gob+ deuda2+deficit_pbi, data = datos_join)
+summary(modelo_nl)
+
+modelo_regresion <- lm( crecimiento_pbi~ deuda_gob + apertura + deficit_pbi+ formacion_bruta_capital + 
+                          consumo_gobierno + interes_real + inflacion, data = datos_join)
+
+#para recaudacion y deuda
+modelo_regresion_2 <- lm(crecimiento_pbi~ deuda_gob + deuda2 + apertura + deficit_pbi +formacion_bruta_capital + 
+                           consumo_gobierno + interes_real + inflacion, data = datos_join)
+summary(modelo_regresion)
+summary(modelo_regresion_2)
+
+
+
+
+
+
 

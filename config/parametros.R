@@ -30,8 +30,13 @@ library(mice)         # Imputación múltiple
 library(Hmisc)        # Herramientas estadísticas
 library(kableExtra)   # Tablas mejoradas
 library(patchwork)    # Combinar gráficos
-library(ggpubr)
-library(countrycode) # Codigo de paises
+library(ggpubr)   
+library(zoo)
+library(lmtest)
+library(car)
+library(carData)
+library(MASS)
+library(ggplot2)
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
   proyecto_tp_grupal <- here::here()  # Usa el paquete 'here'
