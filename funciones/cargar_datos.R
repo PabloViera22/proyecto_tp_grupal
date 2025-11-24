@@ -8,6 +8,7 @@ indicadores <- c("deuda_gob" = "GC.DOD.TOTL.GD.ZS",
                  "region",
                  "poblacion_total"="SP.POP.TOTL")
 
+
 # Lista de Países por continente
 africa <- c("NER", "ETH", "COD", "KEN", "GHA", "ZAF", "MUS")
 america <- c("HTI", "BOL", "HND", "PER", "MEX", "CHL", "URY", "USA", "CAN")
@@ -23,6 +24,16 @@ datos <- WDI(country = "all", indicator = indicadores,
             start = 2015, 
             end = 2024)
 datos
+
+deuda_deficit <- read.csv2("C:/Users/Usuario/Desktop/UNIVERSIDAD/CIENCIA DE DATOS PARA ECON. Y NEG/TP Final/proyecto_tp_grupal/data/raw/deuda_deficit.csv")
+
+deuda_deficit <- deuda_deficit %>%
+  mutate(codigo_iso = countrycode(sourcevar = paises,
+                                  origin = "country.name",
+                                  destination = "iso3c"))
+
+datos_macro <- datos_macro %>%
+  relocate(codigo_iso)
 
 # Exportar los datos a RAW y hacerlos csv
 
