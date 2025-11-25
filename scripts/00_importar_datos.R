@@ -35,7 +35,7 @@ deuda_deficit <- read.csv2("https://raw.githubusercontent.com/PabloViera22/proye
 
 # Join entre las dos tablas
 
-datos <- datos_wdi %>% 
+datos_unidos <- datos_wdi %>% 
   left_join(
     deuda_deficit,
     by = c("iso3c", "year" = "fecha", "country" = "paises")
