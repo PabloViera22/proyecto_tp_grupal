@@ -25,15 +25,14 @@ datos <- WDI(country = "all", indicator = indicadores,
             end = 2024)
 datos
 
-deuda_deficit <- read.csv2("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/raw/deuda_deficit.csv?token=GHSAT0AAAAAADPYWERS56COXRY2UGMN4POG2JGBCGQ")
+deuda_deficit <- read.csv2("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/raw/deuda_deficit.csv?token=GHSAT0AAAAAADPYWERSDZWS573ZUAV7COX22JGDD5A")
 
 deuda_deficit <- deuda_deficit %>%
   mutate(iso3c = countrycode(sourcevar = paises,
                                   origin = "country.name",
-                                  destination = "iso3c"))
+                                  destination = "iso3c")) %>%
+  relocate(iso3c)
 
-datos_macro <- datos_macro %>%
-  relocate(codigo_iso)
 
 # Exportar los datos a RAW y hacerlos csv
 
