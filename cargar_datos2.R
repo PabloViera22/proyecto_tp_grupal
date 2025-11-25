@@ -10,8 +10,9 @@ indicadores3 <- c(
   "consumo_gobierno" ="NE.CON.GOVT.ZS",      # GOV_EXPEND (Government consumption)
   "interes_real" = "FR.INR.RINR",         # Interest rate (Real interest rate)
   "inflacion" = "NY.GDP.DEFL.KD.ZG",   # Inflation (GDP deflator (annual %))
-  "poblacion" = "SP.POP.GROW"          # Population growth
-)
+  "poblacion" = "SP.POP.GROW",          # Population growth
+  "gasto_gobierno_porc"="NE.CON.GOVT.ZS"
+  )
 
 datos3 <- WDI(country = "all", indicator = indicadores3,
              start = 1990, 
@@ -27,6 +28,7 @@ write.csv(
 #==============================================================================#
 #            ANALISIS DE DATOS PERDIDOS PARA PAISES                            #
 #==============================================================================#
+datos3<-read.csv(file.path(dir_data_raw, "csv_datos3"))
 # 1. Aplicar miss_var_summary() a tu data frame
 conteo_na_por_columna2 <- datos3 %>% 
   miss_var_summary() 
@@ -107,8 +109,8 @@ aggr(datos_filtrados_final[, variables_key],
 #==============================================================================#
 # Preparar datos para el test
 datos_para_test <- datos_filtrados_final %>%
-  select(where(is.numeric)) %>%
-  select(where(~any(is.na(.))))
+  dplyr::select(where(is.numeric)) %>%
+  dplyr::select(where(~any(is.na(.))))
 # Realizar test de Little
 test_mcar <- naniar::mcar_test(datos_para_test)
 
@@ -168,7 +170,7 @@ resumen_modelos <- bind_rows(
   mutate(across(where(is.numeric), ~round(., 4)))
 
 resumen_modelos %>%
-  select(modelo, term, estimate, std.error, p.value) %>%
+  dplyr::select(modelo, term, estimate, std.error, p.value) %>%
   kable(caption = "Variables significativas para predecir faltantes (p < 0.1)") %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   row_spec(which(resumen_modelos$p.value < 0.05), bold = TRUE)
@@ -181,7 +183,7 @@ resumen_modelos %>%
 #==============================================================================#
 # Seleccionar variables para imputación
 vars_mice <- datos_filtrados_final %>%
-  select(consumo_gobierno, apertura, formacion_bruta_capital,
+  dplyr::select(consumo_gobierno, apertura, formacion_bruta_capital,
          interes_real)
 
 # Configurar y ejecutar MICE
@@ -258,7 +260,7 @@ resettest(modelo_lineal)
 # NO HAY LINEALIDAD, EL MODELO LINEAL NO ES SUFICIENTE
 
 
-library(mgcv)
+
 modelo_gam<-gam(crecimiento_pbi~ s(deuda_gob) + s(apertura) + s(formacion_bruta_capital) + 
                  s(consumo_gobierno) + s(interes_real) + s(inflacion), data = datos_completos_sin_outliers)
 summary(modelo_gam)
@@ -270,9 +272,8 @@ BIC(modelo_lineal, modelo_gam)
 #==============================================================================#
 # POR ULTIMO, VEO EL MODELO DE PAPER A VER QUE ONDA CAPAZ TENGO SUERTE
 #==============================================================================#
-library(plm)
 
-pstr_modelo
+
 # NO SE PUDO, QUELE VAMO A HACER
 
 datos_completos_sin_outliers$deuda2 <- datos_completos_sin_outliers$deuda_gob^2
@@ -308,7 +309,7 @@ datos_completos_sin_outliers
 
 # meta datos
 meta <- WDI_data$country
-meta_continente<-meta%>%select("iso3c","region", "income")
+meta_continente<-meta%>%dplyr::select("iso3c","region", "income")
 # agregamos
 datos_completos_income_continente <- datos_completos_sin_outliers %>%
   left_join(meta_continente, by = "iso3c")
@@ -404,6 +405,97 @@ modelo_regresion_2 <- lm(crecimiento_pbi~ deuda_gob + deuda2 + apertura + defici
                            consumo_gobierno + interes_real + inflacion, data = datos_join)
 summary(modelo_regresion)
 summary(modelo_regresion_2)
+
+
+datos_completos_sin_outliers
+write.csv(
+  x = datos_completos_sin_outliers,          # Tu data.frame a exportar
+  file = file.path(dir_data_processed, "datos_para_agregar_tasa_crecimiento"),      # La ruta completa del archivo
+  row.names = FALSE,         # Evita incluir los números de fila como una columna
+  fileEncoding = "UTF-8"     # Codificación para manejar acentos y caracteres especiales
+)
+
+#==============================================================================#
+# CREAR COLUMNA DE TASA  DE CRECIMIENTO DE DEUDA
+#==============================================================================#
+datos_para_agregar_tasa_crecimiento<-read.csv(file.path(dir_data_processed, "datos_para_agregar_tasa_crecimiento"))
+
+datos_con_crecimiento_deuda<-datos_para_agregar_tasa_crecimiento%>%
+  mutate(deuda_percapita=deuda_gob*pbi_p_c)%>%
+  group_by(country)%>%
+  mutate(deuda_gob_anterior=lag(deuda_percapita),
+         tasa_crecimiento_deuda=(deuda_percapita-deuda_gob_anterior)/deuda_gob_anterior)%>%
+  ungroup()%>%
+  filter(!is.na(tasa_crecimiento_deuda))
+
+nrow(datos_con_crecimiento_deuda)
+nrow(datos_para_agregar_tasa_crecimiento)
+# PROBAMOS LA REGRSION A VER QUE TUL
+modelo_regresion <- lm( crecimiento_pbi~ tasa_crecimiento_deuda, data = datos_con_crecimiento_deuda)
+summary(modelo_regresion)
+modelo_regresion1 <- lm( crecimiento_pbi~ deuda_gob, data = datos_con_crecimiento_deuda)
+summary(modelo_regresion1)
+#para recaudacion y deuda
+modelo_regresion_2 <- lm(crecimiento_pbi~   tasa_crecimiento_deuda+ apertura  +formacion_bruta_capital + 
+                           consumo_gobierno + interes_real + inflacion, data = datos_con_crecimiento_deuda)
+summary(modelo_regresion)
+summary(modelo_regresion_2)
+
+
+#GRAFICO
+grafico_dispersion <- datos_con_crecimiento_deuda %>%
+  ggplot(aes(x = pbi_p_c, y = interes_real)) + # Mapeo estético: qué columnas usar
+  geom_point(color = "#0072B2", alpha = 0.7, size = 3) + # Capa de puntos: color, transparencia, tamaño
+  labs(
+    title = "Relación entre Variable X y Variable Y",
+    x = "Variable X (Eje Horizontal)",
+    y = "Variable Y (Eje Vertical)",
+    caption = "Fuente: Datos de ejemplo"
+  ) +
+  scale_x_continuous(limits = c(0, 105))+
+  theme_minimal() # Tema simple y limpio
+
+# 3. Mostrar el gráfico
+print(grafico_dispersion)
+
+
+# CONCLUSION: EL CRECIMIENTO DE LA DEUDA NO SE RELACIONA CON LA TAASA DE CRECIMIENTO
+
+# PONER COLUMNA DE TASA DE CRECIMIENTO DEL GASTO DEL GOB Y LA DEUDA
+datos_con_consumo_gob<-datos_completos_sin_outliers%>%
+  mutate(consumo_gob_p_c=consumo_gobierno*pbi_p_c,
+         deuda_percapita=deuda_gob*pbi_p_c)%>%
+  group_by(country)%>%
+  mutate("lag"=lag(consumo_gob_p_c),
+         deuda_gob_anterior=lag(deuda_percapita),
+         tasa_crecimiento_consumo_gob=(consumo_gob_p_c-lag)/lag,
+         tasa_crecimiento_deuda=(deuda_percapita-deuda_gob_anterior)/deuda_gob_anterior)%>%
+  ungroup()%>%
+  filter(!is.na(tasa_crecimiento_consumo_gob),
+         !is.na(tasa_crecimiento_deuda))
+
+modelo_regresion1 <- lm(  tasa_crecimiento_consumo_gob~ crecimiento_pbi+ tasa_crecimiento_deuda, data = datos_con_consumo_gob)
+summary(modelo_regresion1)
+
+modelo_regresion2 <- lm( deuda_gob~ tasa_crecimiento_consumo_gob, data = datos_con_consumo_gob)
+summary(modelo_regresion2)
+
+
+
+#GRAFICO
+grafico_dispersion <- datos_con_consumo_gob %>%
+  ggplot(aes(x = deuda_gob, y = crecimiento_pbi)) + # Mapeo estético: qué columnas usar
+  geom_point(color = "#0072B2", alpha = 0.7, size = 3) + # Capa de puntos: color, transparencia, tamaño
+  labs(
+    title = "Relación entre Variable X y Variable Y",
+    x = "Variable X (Eje Horizontal)",
+    y = "Variable Y (Eje Vertical)",
+    caption = "Fuente: Datos de ejemplo"
+  ) + 
+  scale_x_continuous(limits = c(10,200 ))+
+  theme_minimal() # Tema simple y limpio
+print(grafico_dispersion)
+
 
 
 

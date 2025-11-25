@@ -19,6 +19,7 @@ options(digits = 2) # Decimales a mostrar
 library(here)
 library(WDI)
 library(tidyverse)
+library(dplyr)
 library(readxl)
 library(lubridate)
 library(scales)
@@ -37,6 +38,9 @@ library(car)
 library(carData)
 library(MASS)
 library(ggplot2)
+library(mgcv)
+library(tidyverse)
+library(dplyr)
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
   proyecto_tp_grupal <- here::here()  # Usa el paquete 'here'
