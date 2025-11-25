@@ -25,7 +25,7 @@ datos <- WDI(country = "all", indicator = indicadores,
             end = 2024)
 datos
 
-deuda_deficit <- read.csv2("C:/Users/Usuario/Desktop/UNIVERSIDAD/CIENCIA DE DATOS PARA ECON. Y NEG/TP Final/proyecto_tp_grupal/data/raw/deuda_deficit.csv")
+deuda_deficit <- read.csv2("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/raw/deuda_deficit.csv?token=GHSAT0AAAAAADPYWERS56COXRY2UGMN4POG2JGBCGQ")
 
 deuda_deficit <- deuda_deficit %>%
   mutate(codigo_iso = countrycode(sourcevar = paises,
