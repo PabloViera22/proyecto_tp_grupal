@@ -20,8 +20,15 @@ datos_unidos <- datos_crudos %>%
 exportar_data(data = datos_unidos,nombre = "datos_wdi_con_meta", carpeta = "processed", format = "csv")
 
 
+# Datos de deuda y deficit
 
+deuda_deficit <- read.csv2("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/raw/deuda_deficit.csv?token=GHSAT0AAAAAADPYWERSDZWS573ZUAV7COX22JGDD5A")
 
+deuda_deficit <- deuda_deficit %>%
+  mutate(iso3c = countrycode(sourcevar = paises,
+                             origin = "country.name",
+                             destination = "iso3c")) %>%
+  relocate(iso3c)
 
 
 
