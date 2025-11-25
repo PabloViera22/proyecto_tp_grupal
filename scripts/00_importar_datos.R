@@ -1,4 +1,5 @@
 source(here::here("config", "parametros.R"))
+
 # Importar los datos del banco mundial
 datos_crudos <- WDI(country = "all", indicator = indicadores,
               start = 1990, 
@@ -20,18 +21,32 @@ datos_unidos <- datos_crudos %>%
 exportar_data(data = datos_unidos,nombre = "datos_wdi_con_meta", carpeta = "processed", format = "csv")
 
 
-# Datos de deuda y deficit
+#========================#
+# IMPORTACION DE DATOS  
+#========================#
 
-deuda_deficit <- read.csv2("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/raw/deuda_deficit.csv?token=GHSAT0AAAAAADPYWERSDZWS573ZUAV7COX22JGDD5A")
+# Datos Banco Mundial
 
-deuda_deficit <- deuda_deficit %>%
-  mutate(iso3c = countrycode(sourcevar = paises,
-                             origin = "country.name",
-                             destination = "iso3c")) %>%
-  relocate(iso3c)
+datos_wdi <- read.csv("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/processed/datos_wdi_con_meta.csv?token=GHSAT0AAAAAADPYWERTJ6POIHZZUA2IKVEY2JGEJCA")
 
+# Datos de deuda y deficit (Datos.macro)
 
+deuda_deficit <- read.csv2("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/processed/deuda_deficit_iso3.csv?token=GHSAT0AAAAAADPYWERT6VROQVRF3LIQKBNA2JGEH2Q")
 
+# Join entre las dos tablas
+
+datos <- datos_wdi %>% 
+  left_join(
+    deuda_deficit,
+    by = c("iso3c", "year" = "fecha", "country" = "paises")
+  ) %>% 
+  rename(anio = year) %>% 
+  rename(pais = country) %>% 
+  filter(anio %in% c(2017,2020,2023)) %>% 
+  select(-c(
+    iso2c, 
+    deuda_gob))
+  
 
 
 
