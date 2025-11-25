@@ -42,6 +42,7 @@ library(mgcv)
 library(tidyverse)
 library(dplyr)
 library(writexl)
+library(countrycode)
 
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
