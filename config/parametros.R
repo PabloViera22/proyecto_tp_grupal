@@ -41,6 +41,8 @@ library(ggplot2)
 library(mgcv)
 library(tidyverse)
 library(dplyr)
+library(writexl)
+
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
   proyecto_tp_grupal <- here::here()  # Usa el paquete 'here'
@@ -54,10 +56,12 @@ dir_data_clean<-file.path(proyecto_tp_grupal, "data", "clean")
 dir_data_processed <- file.path(proyecto_tp_grupal, "data", "processed")
 dir_outputs_figures <- file.path(proyecto_tp_grupal, "outputs", "figures")
 dir_outputs_tables <- file.path(proyecto_tp_grupal, "outputs", "tables")
+dir_scripts<-file.path(proyecto_tp_grupal, "scripts")
 
 # CREAR DIRECTORIOS SI NO EXISTEN
 dirs_crear <- c(dir_data_raw, dir_data_clean,dir_data_processed, 
-                dir_outputs_figures, dir_outputs_tables)
+                dir_outputs_figures, dir_outputs_tables,
+                dir_scripts)
 for (dir in dirs_crear) {
   if (!dir.exists(dir)) {
     dir.create(dir, recursive = TRUE, showWarnings = FALSE)
@@ -66,6 +70,18 @@ for (dir in dirs_crear) {
 
 # PARAMETROS DE ANÁLISIS
 # Todavía Nada
+indicadores <- c(
+  "deuda_gob" ="GC.DOD.TOTL.GD.ZS",   # DEBT (Central government debt)
+  "crecimiento_pbi" ="NY.GDP.MKTP.KD.ZG",   # GDP_GROWTH (GDP growth (annual %))
+  "pbi_p_c" ="NY.GDP.PCAP.KD",      # GDP_P_C (GDP per capita - Constant US$)
+  "apertura" ="NE.TRD.GNFS.ZS",      # OPENNESS (Trade (% of GDP))
+  "formacion_bruta_capital" ="NE.GDI.FTOT.ZS",      # LTOTAL (Inversión - Gross capital formation)
+  "consumo_gobierno" ="NE.CON.GOVT.ZS",      # GOV_EXPEND (Government consumption)
+  "interes_real" = "FR.INR.RINR",         # Interest rate (Real interest rate)
+  "inflacion" = "NY.GDP.DEFL.KD.ZG",   # Inflation (GDP deflator (annual %))
+  "poblacion" = "SP.POP.GROW",          # Population growth
+  "gasto_gobierno_porc"="NE.CON.GOVT.ZS"
+)
 
 # Funciones para mensajes consistentes
 mensaje_exito <- function(texto) {

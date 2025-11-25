@@ -1,6 +1,5 @@
 source(here::here("config", "parametros.R"))
 
-
 indicadores3 <- c(
   "deuda_gob" ="GC.DOD.TOTL.GD.ZS",   # DEBT (Central government debt)
   "crecimiento_pbi" ="NY.GDP.MKTP.KD.ZG",   # GDP_GROWTH (GDP growth (annual %))
