@@ -73,7 +73,7 @@ resultados_mcar %>%
 #==============================================================================#
 # IMPUTACION MULTIPLE
 #==============================================================================#
-vactor<-columna("consumo_gobierno", "apertura", "formacion_bruta_capital",
+vector_columna<-c("consumo_gobierno", "apertura", "formacion_bruta_capital",
                 "interes_real")
 # Seleccionar variables para imputación
 imputacion_multiple<-function(datos, vector_columna){
