@@ -17,13 +17,10 @@ tabla_completa <- tabla_wdi %>%
   filter(year %in% c(2017,2020,2023), ) %>% 
   dplyr::select(-c(iso2c, deuda_gob))
 
-tabla_completa_filtrada<-tabla_completa%>%inner_join(tabla_deficit_deuda_iso3,by = c("iso3c", "year" = "fecha", "country" = "paises"))
+tabla_completa_filtrada<-tabla_completa%>% # Está como filtro
+  inner_join(tabla_deficit_deuda_iso3,by = c("iso3c", "year" = "fecha", "country" = "paises", "deuda_pbi", "deficit_pbi"))
 
-
-
-nrow(tabla_completa_filtrada)
-
-
+exportar_data(data = tabla_completa_filtrada,nombre = "tabla_completa", carpeta = "processed")
 
 
 
