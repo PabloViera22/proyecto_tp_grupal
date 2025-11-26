@@ -19,8 +19,6 @@ datos_join <- datos_crudos %>%
   left_join(meta_continente, by = "iso3c")
 # Exportar a carpeta de procesado
 exportar_data(data = datos_join,nombre = "datos_wdi_con_meta", carpeta = "processed", format = "csv")
-
-
 #==============================================================================#
 # IMPORTACION DE DATOS  
 #==============================================================================#
@@ -35,10 +33,7 @@ datos_unidos <- datos_wdi %>%
   filter(anio %in% c(2017,2020,2023)) %>% dplyr::select(-c(iso2c, deuda_gob))
   
 
-
-
-
-
+#==============================================================================#
 
 
 

@@ -52,7 +52,7 @@ archivos_en_data <- function() {
   # Recolectar archivos por carpeta
   archivos <- lapply(rutas, list.files)
   # Imprimir carpeta + archivos
-  for (carpeta in names(archivos)) {
+  nombres<-for (carpeta in names(archivos)) {
     cat("\nCarpeta:", carpeta, "\n")
     if (length(archivos[[carpeta]]) == 0) {
       cat("  (sin archivos)\n")
@@ -61,6 +61,8 @@ archivos_en_data <- function() {
     }
   }
   invisible(archivos)
+  return("D:/Proyecto_Git_TP_Grupal/proyecto_tp_grupal/data")
+  return(nombres)
 }
 
 

@@ -495,9 +495,37 @@ grafico_dispersion <- datos_con_consumo_gob %>%
   theme_minimal() # Tema simple y limpio
 print(grafico_dispersion)
 
+#==============================================================================#
+# CORRESPONDIA A IMPORTAR Y LIMPIAR PERO YA LO HABIA HECHO GERO
+#==============================================================================#
+# IMPORTAR DATOS DE WEB, PÁGINA: DATOS MACRO
+url23 <- "https://countryeconomy.com/national-debt?anio=2023"
+page <- read_html(url23)
+tabla23 <- page %>% html_element("table") %>% html_table()
 
+url20 <- "https://countryeconomy.com/national-debt?anio=2020"
+page2 <- read_html(url20)
+tabla20 <- page2 %>% html_element("table") %>% html_table()
 
+url17 <- "https://countryeconomy.com/national-debt?anio=2017"
+page3 <- read_html(url17)
+tabla17 <- page3 %>% html_element("table") %>% html_table()
 
+# UNIR TABLAS
+tabla_deuda <- bind_rows(tabla23, tabla17, tabla20)
+exportar_data(data=tabla_deuda, "tabla_deuda", carpeta="raw")
+
+# IMPORTAR
+tabla_deuda<-read_csv("D:/Proyecto_Git_TP_Grupal/proyecto_tp_grupal/data/raw/tabla_deuda.csv")
+# Limpio los nombres de los paises de la tabla deuda
+tabla_deuda_limpiar <- tabla_deuda %>%mutate( paises = str_replace(Countries, "\\[\\+\\]$", ""))%>%
+  dplyr::select(paises, `Debt (%GDP)`, Date)%>%rename("deuda_porc_pib"=`Debt (%GDP)`, "fecha"=`Date`)%>%
+  mutate(iso3 = countrycode(
+    sourcevar = paises,            # tu columna con nombres
+    origin = "country.name",  # nombres en español
+    destination = "iso3c",       # código ISO3
+    warn = TRUE                  # avisa si alguno no se mapea
+  ))
 
 
 

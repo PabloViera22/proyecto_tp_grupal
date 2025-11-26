@@ -14,7 +14,6 @@ options(stringsAsFactors = FALSE)
 options(scipen = 999)  # Evitar notación científica
 options(digits = 2) # Decimales a mostrar 
 
-
 # LIBRERÍAS DEL PROYECTO
 library(here)
 library(WDI)
@@ -43,6 +42,8 @@ library(tidyverse)
 library(dplyr)
 library(writexl)
 library(countrycode)
+library(rvest)
+library(stringr)
 
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
