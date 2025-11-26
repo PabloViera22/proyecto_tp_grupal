@@ -34,7 +34,7 @@ conteo_na_por_columna2 <- datos3 %>%
 
 # 2. Mostrar solo el nombre de la variable y el conteo de NA
 conteo_na_por_columna2 %>%
-  select(variable, n_miss) %>%
+  dplyr::select(variable, n_miss) %>%
   print(n = Inf) # 'print(n = Inf)' para ver todas las filas si hay muchas columnas
 nrow(datos3)
 

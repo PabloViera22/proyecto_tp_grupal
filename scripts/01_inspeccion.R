@@ -52,7 +52,7 @@ grafico_violin <- ggplot(
   theme_bw()
 
 # Pdriamos hacer una matriz de correlacion o mapa de calor de correlacion (buscar como HEATMAP)
-
+#pero capaz haya que limpiarlo primero
 
 
 
