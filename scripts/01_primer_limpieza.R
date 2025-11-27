@@ -1,3 +1,5 @@
+source(here::here("funciones", "funciones_para_importar_exportar.R"))
+
 archivos_en_data()
 tabla_wdi<-read_csv("D:/Proyecto_Git_TP_Grupal/proyecto_tp_grupal/data/processed/datos_wdi_con_meta.csv")
 tabla_deficit_deuda<-read_csv2("D:/Proyecto_Git_TP_Grupal/proyecto_tp_grupal/data/raw/deuda_deficit.csv")
@@ -15,11 +17,14 @@ tabla_completa <- tabla_wdi %>%
   left_join(tabla_deficit_deuda_iso3, by = c("iso3c", "year" = "fecha", "country" = "paises")
   ) %>% 
   filter(year %in% c(2017,2020,2023), ) %>% 
-  dplyr::select(-c(iso2c, deuda_gob))
+  dplyr::select(-c(iso2c, deuda_gob))%>%
+  mutate(deuda_cuadrada=deuda_pbi^2)
 
 tabla_completa_filtrada<-tabla_completa%>% # Está como filtro
   inner_join(tabla_deficit_deuda_iso3,by = c("iso3c", "year" = "fecha", "country" = "paises", "deuda_pbi", "deficit_pbi"))
 
+#==============================================================================#
+#==============================================================================#
 exportar_data(data = tabla_completa_filtrada,nombre = "tabla_completa", carpeta = "processed")
 
 
