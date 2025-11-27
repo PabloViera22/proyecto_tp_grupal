@@ -16,10 +16,12 @@ tabla_imputar %>%
   group_by(region) %>% 
   summarise(
     cantida_paises = n_distinct(country),
-    mediana_deuda_pbi = median(deuda_pbi),
-    media_deuda_pbi = mean(deuda_pbi)
+    mediana = median(deuda_pbi),
+    media = mean(deuda_pbi)
   ) %>% 
   arrange(desc(mediana_deuda_pbi))
+
+# Segun region el resultado es muy variado
  
 # Media y mediana de la deuda segun ingreso
 
@@ -34,10 +36,36 @@ tabla_imputar %>%
   group_by(income) %>% 
   summarise(
     cantida_paises = n_distinct(country),
-    mediana_deuda_pbi = median(deuda_pbi),
-    media_deuda_pbi = mean(deuda_pbi)
+    mediana = median(deuda_pbi),
+    media = mean(deuda_pbi)
   ) %>% 
   mutate(income = factor(income, levels = orden_ingresos)) %>%
   arrange(income)
 
+# La media y mediana segun ingreso es mas contundente
+# Los paises con mas ingresos tienden a tener mayor deuda como % del pbi
+
+#=========================
+# ANALISIS DE DISPERSION #
+#=========================
+
+# Analizaremos segun ingreso de cada pais
+
+tabla_imputar %>%
+  group_by(income) %>%
+  summarise(
+    cantida_paises = n_distinct(country),
+    mediana = median(deuda_pbi),
+    media = mean(deuda_pbi),
+    desvio = sd(deuda_pbi),
+    iqr = IQR(deuda_pbi),
+    minimo = min(deuda_pbi),
+    maximo = max(deuda_pbi)
+  ) %>% 
+  mutate(income = factor(income, levels = orden_ingresos)) %>%
+  arrange(income)
+
+#=================================
+# ANALISIS DEL BOXPLOT y OUTLIERS#
+#=================================
 
