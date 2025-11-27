@@ -6,6 +6,10 @@
 # Agregar tabla con el nuevo link cuando el repositorio sea publico (borrar comentario cuando se haga)
 tabla_imputar <- read.csv("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/processed/tabla_para_imputacion.csv?token=GHSAT0AAAAAADPYWERTI4P2EUDVTYSAAM4E2JI3KJQ") 
 
+#==================
+# MEDIA Y MEDIANA #
+#==================
+
 # Media y mediana de la deuda segun region
 
 tabla_imputar %>% 
@@ -36,4 +40,4 @@ tabla_imputar %>%
   mutate(income = factor(income, levels = orden_ingresos)) %>%
   arrange(income)
 
-# Media y mediana de la deuda segun region e ingreso
+
