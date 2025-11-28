@@ -16,13 +16,8 @@ modelo_regresion_general <- lm( crecimiento_pbi~ deuda_pbi + deuda_cuadrada+ def
 summary(modelo_regresion_general)
 # A PRIMERA VISTA VEMOS QUE NO PODEMOS DETERMINAR EL SIGNO DE DEUDA Y DEUDA CUADRADA
 
-alpha <- 0.05
-df <- 10
-
-t_critico <- qt(1 - alpha/2, df)
-t_critico
-modelo_regresion_general$df.residual
-
+# PRUEBA HIPTESIS
+prueba_hipotesis(modelo_regresion_general)
 #==============================================================================#
 # REGRESION PARA INGRESO ALTO
 #==============================================================================#
@@ -30,6 +25,9 @@ ingreso_alto<-tabla_regresion%>%dplyr::filter(income=="High income")
 modelo_regresion_alto <- lm( crecimiento_pbi~ deuda_pbi + deuda_cuadrada+ deficit_pbi + apertura + formacion_bruta_capital + 
                                   consumo_gobierno + inflacion, data = ingreso_alto)
 summary(modelo_regresion_alto)
+
+# PRUEBA HIPTESIS
+prueba_hipotesis(modelo_regresion_alto)
 #==============================================================================#
 # REGRESION PARA INGRESO MEDIO
 #==============================================================================#
@@ -37,6 +35,10 @@ ingreso_medio<-tabla_regresion%>%dplyr::filter(income=="Upper middle income")
 modelo_regresion_medio <- lm( crecimiento_pbi~ deuda_pbi + deuda_cuadrada+ deficit_pbi + apertura + formacion_bruta_capital + 
                                consumo_gobierno + inflacion, data = ingreso_medio)
 summary(modelo_regresion_medio)
+
+# PRUEBA HIPTESIS
+prueba_hipotesis(modelo_regresion_medio)
+
 
 #==============================================================================#
 # REGRESION PARA INGRESO MEDIO BAJO
@@ -46,6 +48,10 @@ modelo_regresion_medio_bajo <- lm( crecimiento_pbi~ deuda_pbi + deuda_cuadrada+ 
                                 consumo_gobierno + inflacion, data = ingreso_medio_bajo)
 summary(modelo_regresion_medio_bajo)
 
+# PRUEBA HIPTESIS
+prueba_hipotesis(modelo_regresion_medio_bajo)
+
+
 #==============================================================================#
 # REGRESION PARA INGRESO BAJO
 #==============================================================================#
@@ -53,6 +59,9 @@ ingreso_bajo<-tabla_regresion%>%dplyr::filter(income=="Low income")
 modelo_regresion_bajo <- lm( crecimiento_pbi~ deuda_pbi + deuda_cuadrada+ deficit_pbi + apertura + formacion_bruta_capital + 
                                      consumo_gobierno + inflacion, data = ingreso_bajo)
 summary(modelo_regresion_bajo)
+
+# PRUEBA HIPTESIS
+prueba_hipotesis(modelo_regresion_bajo)
 
 # CONCLUSIÓN 
 # los datos no son concluyentes pero no podemos rechazar la hipotesis de que un 
