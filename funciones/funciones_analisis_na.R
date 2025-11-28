@@ -53,7 +53,6 @@ resultados_mcar %>%
   column_spec(4, bold = TRUE, 
               color = ifelse(test_mcar$p.value < 0.05, "red", "green"))
 
-# RESULTADO ES QUE NO SON DATOS PERDIDOS COMPLETAMNTE AL AZAR
 }
 
 

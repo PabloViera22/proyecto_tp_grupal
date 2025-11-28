@@ -85,6 +85,11 @@ indicadores <- c(
   "gasto_gobierno_porc"="NE.CON.GOVT.ZS"
 )
 
+columnas<-c("crecimiento_pbi", "pbi_p_c",  "apertura", 
+            "formacion_bruta_capital",  "consumo_gobierno",  
+            "interes_real", "inflacion",
+            "deuda_pbi", "deuda_deficit")
+
 # Funciones para mensajes consistentes
 mensaje_exito <- function(texto) {
   cat("
