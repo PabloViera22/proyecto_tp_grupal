@@ -1,7 +1,12 @@
 # IMPORTAMOS DATOS
 tabla_regresion<-read.csv("D:/Proyecto_Git_TP_Grupal/proyecto_tp_grupal/data//clean/tabla_limpia.csv")
 # HIPOTESIS: DEUDA TIENE REALCION EN FORMA DE U INVERTIDA. EL COEFICIENTE DE DEUDA>0 Y EL COEF. DEUDA^2<0.
-
+# TEST DE HIPOTESIS 
+# HAY QUE HACER DOS TEST DE HIPOTESIS. 
+# 1) H_0: Beta_1>=0 
+#    H_1: Beta_1<0
+# 2) H_0: Beta_2<=0
+#    H_1: Beta_2>0
 
 #==============================================================================#
 # MODELO REGRESION GENERAL CORROBARCION DE HIPÓTESIS
@@ -10,6 +15,13 @@ modelo_regresion_general <- lm( crecimiento_pbi~ deuda_pbi + deuda_cuadrada+ def
                           consumo_gobierno + inflacion, data = tabla_regresion)
 summary(modelo_regresion_general)
 # A PRIMERA VISTA VEMOS QUE NO PODEMOS DETERMINAR EL SIGNO DE DEUDA Y DEUDA CUADRADA
+
+alpha <- 0.05
+df <- 10
+
+t_critico <- qt(1 - alpha/2, df)
+t_critico
+modelo_regresion_general$df.residual
 
 #==============================================================================#
 # REGRESION PARA INGRESO ALTO
