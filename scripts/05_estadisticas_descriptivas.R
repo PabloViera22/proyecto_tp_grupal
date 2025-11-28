@@ -185,7 +185,7 @@ graf_histograma <- ggplot(tabla_imputar, aes(x = deuda_pbi)) +
     subtitle = "Rojo (Sólida) = Mediana | Azul (Punteada) = Media",
     caption = "Elaboración propia segun Banco Mundial y Datos Macro",
     x = "Deuda Pública (% PBI)",
-    y = "Cantidad de Países"
+    y = "Densidad"
   ) +
   theme_minimal() +
   theme(
