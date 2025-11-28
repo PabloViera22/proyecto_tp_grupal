@@ -30,6 +30,18 @@ analisis_exploratorio%>%group_by(income)%>%
   kable(format = "html", caption=" Tabla Resumen")%>%
   kable_styling(full_width = FALSE)
 
+# VARIANZA Y DESVIACION ESTANDAR POR AÑO
+deuda_dispersion_por_año <- analisis_exploratorio %>%group_by(year)%>%
+  summarise(desv_estandar_año = sd(deuda_pbi, na.rm = TRUE), varianza_año = var(deuda_pbi, na.rm = TRUE))%>%
+  kable(format = "html", caption=" Tabla Resumen")%>%
+  kable_styling(full_width = FALSE)
+
+# VARIANZA Y DESVIACION ESTANDAR POR INGRESO
+deuda_dispersion_por_ingreso <- analisis_exploratorio %>%group_by(income)%>%
+  summarise(desv_estandar_ingreso = sd(deuda_pbi, na.rm = TRUE), varianza_ingreso = var(deuda_pbi, na.rm = TRUE))%>%
+  kable(format = "html", caption=" Tabla Resumen")%>%
+  kable_styling(full_width = FALSE)
+
 #==============================================================================#
 # GRAFICOS
 
