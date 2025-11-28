@@ -4,26 +4,18 @@
 
 # IMPORTANTE!!
 # Agregar tabla con el nuevo link cuando el repositorio sea publico (borrar comentario cuando se haga)
-tabla_imputar <- read.csv("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/processed/tabla_para_imputacion.csv?token=GHSAT0AAAAAADPYWERTI4P2EUDVTYSAAM4E2JI3KJQ") 
+tabla_imputar <- read.csv("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/processed/tabla_para_imputacion.csv?token=GHSAT0AAAAAADPYWERTDILAZ5KNJANN25G42JI5MCQ") 
 
-#==================
-# MEDIA Y MEDIANA #
-#==================
+#======================================================================
+#                   AÑO 2017: El mundo pre-pandemia                    #                   
+#======================================================================
 
-# Media y mediana de la deuda segun region
+anio_2017 <- tabla_imputar %>% 
+  filter(year == 2017)
 
-tabla_imputar %>% 
-  group_by(region) %>% 
-  summarise(
-    cantida_paises = n_distinct(country),
-    mediana = median(deuda_pbi),
-    media = mean(deuda_pbi)
-  ) %>% 
-  arrange(desc(mediana_deuda_pbi))
-
-# Segun region el resultado es muy variado
- 
-# Media y mediana de la deuda segun ingreso
+#==========================================
+# MEDIA, MEDIANA y ANALISIS DE DISPERSION # 
+#==========================================
 
 # Ordeno segun ingreso
 
@@ -32,26 +24,9 @@ orden_ingresos <- c("High income",
                     "Lower middle income", 
                     "Low income")
 
-tabla_imputar %>% 
-  group_by(income) %>% 
-  summarise(
-    cantida_paises = n_distinct(country),
-    mediana = median(deuda_pbi),
-    media = mean(deuda_pbi)
-  ) %>% 
-  mutate(income = factor(income, levels = orden_ingresos)) %>%
-  arrange(income)
-
-# La media y mediana segun ingreso es mas contundente
-# Los paises con mas ingresos tienden a tener mayor deuda como % del pbi
-
-#=========================
-# ANALISIS DE DISPERSION #
-#=========================
-
 # Analizaremos segun ingreso de cada pais
 
-tabla_imputar %>%
+anio_2017 %>%
   group_by(income) %>%
   summarise(
     cantida_paises = n_distinct(country),
@@ -65,7 +40,25 @@ tabla_imputar %>%
   mutate(income = factor(income, levels = orden_ingresos)) %>%
   arrange(income)
 
-#=================================
-# ANALISIS DEL BOXPLOT y OUTLIERS#
-#=================================
+#==================================
+# ANALISIS DEL BOXPLOT y OUTLIERS #
+#==================================
+
+# Outliers dentro de cada grupo
+
+paises_outliers_2017 <- anio_2017 %>% 
+  group_by(income) %>% 
+  mutate(
+    Q1 = quantile(deuda_pbi, 0.25),
+    Q3 = quantile(deuda_pbi, 0.75),
+    IQR = IQR(deuda_pbi),
+    techo = Q3 + 1.5*IQR,
+    piso = Q1 - 1.5*IQR
+  ) %>% 
+  filter(deuda_pbi > techo | deuda_pbi < piso) %>% 
+  select(country, income, pbi_p_c, deuda_pbi) %>% 
+  arrange(desc(deuda_pbi))
+  
+print("Para el año 2017, estos paises fueron outliers dentro de sus grupos: ")
+print(paises_outliers_2017)
 
