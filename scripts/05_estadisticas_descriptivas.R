@@ -176,7 +176,7 @@ boxplot_2020 <- ggplot(anio_2020, aes(x = income, y = deuda_pbi, fill = income))
   # Titulos y etiquetas
   
   labs(
-    title = "Distribución de la Deuda Pública para el año 2017",
+    title = "Distribución de la Deuda Pública para el año 2020",
     subtitle = "Ordenado segun ingresos de los paises",
     caption = "Elaboracion propia segun Banco Mundial y Datos Macro",
     x = "",
@@ -303,9 +303,13 @@ print(boxplot_2023)
 #                   BOXPLOT CONJUNTO                                  #                   
 #======================================================================
 
-# Calculamos los outliers agrupando por AÑO y por ingreso
+anio_todos <- tabla_imputar %>% 
+  mutate(income = factor(income, levels = c("High income", 
+                                            "Upper middle income", 
+                                            "Lower middle income", 
+                                            "Low income")))
 
-paises_outliers_todos <- tabla_imputar %>%
+paises_outliers_todos <- anio_todos %>%
   group_by(year, income) %>% 
   mutate(
     Q1 = quantile(deuda_pbi, 0.25),
@@ -316,8 +320,40 @@ paises_outliers_todos <- tabla_imputar %>%
   ) %>%
   ungroup() %>%
   filter(deuda_pbi > techo | deuda_pbi < piso) %>% 
-  select(country, income, pbi_p_c, deuda_pbi) %>% 
+  select(country, year, income, pbi_p_c, deuda_pbi) %>% 
   arrange(desc(deuda_pbi))
 
 print("Todos los outliers")
 print(paises_outliers_todos)
+
+boxplot_evolucion <- ggplot(tabla_imputar, aes(x = income, y = deuda_pbi, fill = income)) +
+  geom_boxplot(alpha = 0.8) + 
+  facet_wrap(~ year) + # Dividido en tres paneles
+  scale_fill_manual(values = c(
+    "High income"         = "#2E8B57",  
+    "Upper middle income" = "#9ACD32",  
+    "Lower middle income" = "#FFA500",  
+    "Low income"          = "#CD5C5C"   
+  )) +
+  labs(
+    title = "Evolución de la Deuda Pública (2017 - 2023)",
+    subtitle = "Comparación de distribución y outliers por año y nivel de ingreso",
+    caption = "Elaboracion propia segun Banco Mundial y Datos Macro",
+    x = "",
+    y = "Deuda como % del PBI"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 8, face = "bold", angle = 45, hjust = 1), 
+    plot.caption = element_text(hjust = 0),
+    strip.text = element_text(size = 12, face = "bold") 
+  ) +
+  geom_text_repel(data = paises_outliers_todos,   
+                  aes(label = country),      
+                  size = 3,                  
+                  box.padding = 0.4,
+                  max.overlaps = 15 # Un poco más de tolerancia para que muestre varios
+  )
+
+print(boxplot_evolucion)
