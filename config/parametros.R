@@ -44,13 +44,13 @@ library(writexl)
 library(countrycode)
 library(rvest)
 library(stringr)
+library(purrr)
+library(rlang)
 
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
   proyecto_tp_grupal <- here::here()  # Usa el paquete 'here'
-  # Alternativa manual:
-  # proyecto_tp_grupal <- dirname(rstudioapi::getSourceEditorContext()$path)
-}
+  }
 
 # RUTAS PRINCIPALES
 dir_data_raw <- file.path(proyecto_tp_grupal, "data", "raw")
@@ -71,7 +71,6 @@ for (dir in dirs_crear) {
 }
 
 # PARAMETROS DE ANÁLISIS
-# Todavía Nada
 indicadores <- c(
   "deuda_gob" ="GC.DOD.TOTL.GD.ZS",   # DEBT (Central government debt)
   "crecimiento_pbi" ="NY.GDP.MKTP.KD.ZG",   # GDP_GROWTH (GDP growth (annual %))

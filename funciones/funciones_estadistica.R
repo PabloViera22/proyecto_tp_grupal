@@ -2,7 +2,7 @@
 # ANALISIS GENERAL
 #==============================================================================#
 
-resumen_estadistico <- function(data, 
+resumen_estadistico_grupo <- function(data, 
                                 vector_col_a_resumir, 
                                 grupo, 
                                 name_col_country = "country") {
@@ -42,10 +42,33 @@ resumen_estadistico <- function(data,
   return(dplyr::bind_rows(lista_resultados))
 }
 
-
-
-
-
+resumen_estadistico<- function(data, name_col_country= "country", vector_col_a_resumir) {
+  
+  # Validación básica
+  if (!name_col_country %in% names(data)) {
+    stop("La columna de país no existe en el data.")
+  }
+  
+  vector_col_a_resumir <- rlang::syms(vector_col_a_resumir)
+  country_col <- rlang::sym(name_col_country)
+  
+  map_dfr(
+    vector_col_a_resumir,
+    \(var) {
+      data %>%
+        summarise(
+          variable = as.character(rlang::as_name(var)),
+          cantidad_paises = n_distinct(.data[[name_col_country]]),
+          mediana = median(.data[[rlang::as_name(var)]], na.rm = TRUE),
+          media   = mean(.data[[rlang::as_name(var)]], na.rm = TRUE),
+          desvio  = sd(.data[[rlang::as_name(var)]], na.rm = TRUE),
+          iqr     = IQR(.data[[rlang::as_name(var)]], na.rm = TRUE),
+          minimo  = min(.data[[rlang::as_name(var)]], na.rm = TRUE),
+          maximo  = max(.data[[rlang::as_name(var)]], na.rm = TRUE)
+        )
+    }
+  )
+}
 
 
 

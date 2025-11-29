@@ -1,3 +1,6 @@
+source(here::here("config", "parametros.R"))
+#==============================================================================#
+# funcion para analizar de forma automatica los NA por grupo
 analizar_na<-function(tabla, grupo){
   if (!grupo %in% c("income", "region")){stop("El formato debe ser 'income' o 'region'") }
   if (!is.data.frame(tabla)) {stop("El objeto 'tabla' debe ser un data frame")}
@@ -7,8 +10,23 @@ analizar_na<-function(tabla, grupo){
     por_columna = conteo_na_por_columna,
     total = conteo_na
   )
-    }
-  
+}
+#==============================================================================#
+# funcion para analizar de forma automatica los NA de una tabla sin dividir em grupos
+analizar_na_general <- function(tabla) {
+  # Validación
+  if (!is.data.frame(tabla)) {
+    stop("El objeto `tabla` debe ser un data frame.")
+  }
+  # Cálculo
+  conteo_na <- tabla %>%
+    miss_var_summary()
+  # Salida
+  list(por_columna = conteo_na)
+}
+#==============================================================================#
+# hace grafico de analisis de na parecido a heatmap de forma automatica pero no
+#permite cambiar las variables a anlizar
 analizar_na_grafico<-function(tabla,grupo){
   if (!grupo %in% c("Upper middle income", "High income","Lower middle income", "Low income"))
     {stop("El formato debe ser Upper middle income, High income,Lower middle income, Low income") }
