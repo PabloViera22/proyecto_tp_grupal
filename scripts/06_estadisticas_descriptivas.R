@@ -23,7 +23,11 @@ analisis_estadistico <- tabla_imputar %>%
     desvio = sd(deuda_pbi),
     iqr = IQR(deuda_pbi),
     minimo = min(deuda_pbi),
-    maximo = max(deuda_pbi)
+    maximo = max(deuda_pbi),
+    percentil_5 = quantile(deuda_pbi, probs = 0.05),
+    cuartil_1 = quantile(deuda_pbi, probs = 0.25),
+    cuartil_3 = quantile(deuda_pbi, probs = 0.75),
+    percentil_95 = quantile(deuda_pbi, probs = 0.95),
   ) %>% 
   ungroup() %>% 
   mutate(income = factor(income, levels = c("High income", 
