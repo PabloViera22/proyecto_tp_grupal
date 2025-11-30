@@ -46,6 +46,7 @@ library(rvest)
 library(stringr)
 library(purrr)
 library(rlang)
+library(ggrepel)
 
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
