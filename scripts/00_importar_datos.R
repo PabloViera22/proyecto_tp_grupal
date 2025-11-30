@@ -25,15 +25,22 @@ exportar_data(data = datos_join,nombre = "datos_wdi_con_meta", carpeta = "proces
 #==============================================================================#
 # IMPORTAR DATOS  
 #==============================================================================#
+
 # Datos Banco Mundial
 datos_wdi <- cargar_datos(nombre_archivo = "datos_wdi_con_meta.csv", carpeta = "processed")
 # Datos de deuda y deficit (Datos.macro)
 deuda_deficit <- read.csv2(file.path(proyecto_tp_grupal, "data", "processed", "deuda_deficit_iso3.csv"))
+
 # Join entre las dos tablas
 datos_wdi_mas_macro <- datos_wdi %>% 
-  left_join(deuda_deficit,y = c("iso3c", "year" = "fecha", "country" = "paises")
-  ) %>% rename(anio = year) %>% rename(pais = country) %>% 
-  filter(anio %in% c(2017,2020,2023)) %>% dplyr::select(-c(iso2c, deuda_gob))
+  left_join(
+    deuda_deficit,
+    by = c("iso3c", "year" = "fecha", "country" = "paises")
+  ) %>%
+  rename(anio = year) %>%
+  rename(pais = country) %>%
+  filter(anio %in% c(2017, 2020, 2023)) %>%
+  dplyr::select(-c(iso2c, deuda_gob))
   
 # Exporta tabla del join
 exportar_data(data = datos_wdi_mas_macro, nombre = tabla_completa, carpeta = "processed")
