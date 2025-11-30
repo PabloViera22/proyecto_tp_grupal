@@ -4,9 +4,7 @@ library(ggrepel) # Agregar esta libreria a los nuevos parametros
 
 # Importacion de scipt anterior
 
-# IMPORTANTE!!
-# Agregar tabla con el nuevo link cuando el repositorio sea publico (borrar comentario cuando se haga)
-tabla_imputar <- read.csv("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/processed/tabla_para_imputacion.csv?token=GHSAT0AAAAAADPYWERTFRGRCBLFFQ5CM7HK2JJE2BQ") 
+tabla_imputar <- read.csv("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/processed/tabla_para_imputacion.csv") 
 
 #====================================
 #      TABLA DE ANALISIS            #
