@@ -70,9 +70,23 @@ resumen_estadistico<- function(data, name_col_country= "country", vector_col_a_r
   )
 }
 
+#==============================================================================#
+# CURVA DENSIDAD
 
-
-
+graficar_densidad <- function(tabla, variable) {
+  # Validación
+  if (!is.data.frame(tabla)) {stop("El objeto `tabla` debe ser un data frame.")}
+    var <- enquo(variable)
+  
+  ggplot(tabla, aes(x = !!var)) +
+    geom_density(fill = "skyblue", alpha = 0.5) +
+    labs(
+      title = paste("Densidad de", rlang::as_name(var)),
+      x = "Valor",
+      y = "Densidad"
+    ) +
+    theme_minimal()
+}
 
 
 

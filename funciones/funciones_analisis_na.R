@@ -1,4 +1,3 @@
-source(here::here("config", "parametros.R"))
 #==============================================================================#
 # funcion para analizar de forma automatica los NA por grupo
 analizar_na<-function(tabla, grupo){

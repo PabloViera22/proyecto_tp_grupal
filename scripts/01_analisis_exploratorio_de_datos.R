@@ -1,6 +1,7 @@
 source(here::here("config", "parametros.R"))
 source(here::here("funciones", "funciones_para_importar_exportar.R"))
 source(here::here("funciones", "funciones_estadistica.R"))
+source(here::here("funciones", "funciones_analisis_na.R"))
 # IMPORTAR DEL SCRIP ANTERIOR
 archivos_en_data()
 
