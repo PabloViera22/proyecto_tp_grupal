@@ -23,12 +23,12 @@ library(tidyverse)
 #library(lubridate)
 #library(scales)
 #library(readr)
-#library(naniar) 
+library(naniar) # Libreria para analizar datos faltantes
 #library(eurostat)
 #library(VIM)
 #library(mice)         # Imputación múltiple
 #library(Hmisc)        # Herramientas estadísticas
-#library(kableExtra)   # Tablas mejoradas
+library(kableExtra)   # Tablas mejoradas
 #library(patchwork)    # Combinar gráficos
 #library(ggpubr)   
 #library(zoo)
