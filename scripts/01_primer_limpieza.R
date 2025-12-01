@@ -15,7 +15,8 @@ primer_limpieza_income<-primer_limpieza%>%dplyr::filter( !is.na(income),!income 
 colnames(primer_limpieza_income)
 primer_limpieza_filtro<-primer_limpieza_income%>%
   dplyr::select(-c(interes_real,deuda_millones,deficit_millones, deuda_per_capita))%>%
-  dplyr::mutate(deuda_cuadrada=deuda_pbi^2)
+  dplyr::mutate(deuda_cuadrada=deuda_pbi^2)%>%
+  filter(!is.na(deuda_pbi))
   
 #==============================================================================#
 exportar_data(data = primer_limpieza_filtro,nombre = "tabla_primer_limpieza", carpeta = "processed")

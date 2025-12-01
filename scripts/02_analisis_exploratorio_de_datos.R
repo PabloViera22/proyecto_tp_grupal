@@ -16,7 +16,6 @@ na_de_wdi%>%kable(format = "html", caption="NA en tabla de WDI")%>%
 
 #==============================================================================#
 #ANALISIS POR GRUPO
-col_resumir<-c("deuda_pbi", "deficit_pbi", "formacion_bruta_capital", "inflacion")
 medidas_estaditicas_grupo<-resumen_estadistico_grupo(data =analisis_exploratorio, 
                                          vector_col_a_resumir = c("deuda_pbi", "deficit_pbi"),
                                          grupo = "income")
@@ -24,6 +23,7 @@ medidas_estaditicas_grupo%>% kable(format = "html", caption="Resumen Estadístic
   kable_styling(full_width = FALSE)
 
 #ANALISIS GENERAL
+col_resumir<-c("deuda_pbi", "deficit_pbi", "formacion_bruta_capital", "inflacion", "consumo_gobierno")
 medidas_estaditicas<-resumen_estadistico(data =analisis_exploratorio, 
                                                vector_col_a_resumir = col_resumir)
 medidas_estaditicas%>% kable(format = "html", caption=" Resumen Estadístico")%>%
@@ -36,7 +36,7 @@ graficar_densidad(analisis_exploratorio, variable = formacion_bruta_capital)
 
 #==============================================================================#
 # CANTIDAD DE DATOS POR INGRESO:
-analisis_exploratorio$income%>%table()%>%as.data.frame() %>%
+analisis_exploratorio$income%>%table()%>%as.data.frame() %>% dplyr::arrange(desc(Freq))%>%
   kable(format = "html", caption="Conteo de Datos",col.names = c("ingreso", "frecuencia"))%>%
   kable_styling(full_width = FALSE)
 nrow(analisis_exploratorio)
