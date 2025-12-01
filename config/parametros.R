@@ -15,37 +15,37 @@ options(scipen = 999)  # Evitar notación científica
 options(digits = 2) # Decimales a mostrar 
 
 # LIBRERÍAS DEL PROYECTO
-library(here)
+#library(here)
 library(WDI)
 library(tidyverse)
-library(dplyr)
-library(readxl)
-library(lubridate)
-library(scales)
-library(readr)
-library(naniar) 
-library(eurostat)
-library(VIM)
-library(mice)         # Imputación múltiple
-library(Hmisc)        # Herramientas estadísticas
-library(kableExtra)   # Tablas mejoradas
-library(patchwork)    # Combinar gráficos
-library(ggpubr)   
-library(zoo)
-library(lmtest)
-library(car)
-library(carData)
-library(MASS)
-library(ggplot2)
-library(mgcv)
-library(dplyr)
-library(writexl)
-library(countrycode)
-library(rvest)
-library(stringr)
-library(purrr)
-library(rlang)
-library(ggrepel)
+#library(dplyr)
+#library(readxl)
+#library(lubridate)
+#library(scales)
+#library(readr)
+#library(naniar) 
+#library(eurostat)
+#library(VIM)
+#library(mice)         # Imputación múltiple
+#library(Hmisc)        # Herramientas estadísticas
+#library(kableExtra)   # Tablas mejoradas
+#library(patchwork)    # Combinar gráficos
+#library(ggpubr)   
+#library(zoo)
+#library(lmtest)
+#library(car)
+#library(carData)
+#library(MASS)
+#library(ggplot2)
+#library(mgcv)
+#library(dplyr)
+#library(writexl)
+#library(countrycode)
+#library(rvest)
+#library(stringr)
+#library(purrr)
+#library(rlang)
+#library(ggrepel)
 
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
