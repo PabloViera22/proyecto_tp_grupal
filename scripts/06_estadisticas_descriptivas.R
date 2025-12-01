@@ -1,5 +1,6 @@
 source(here::here("config", "parametros.R"))
 source(here::here("funciones", "funciones_para_importar_exportar.R"))
+source(here::here("funciones", "funciones_visualizacion.R"))
 
 # Importacion de scipt anterior
 
@@ -95,6 +96,8 @@ graf_conteo <- ggplot(datos_conteo, aes(x = factor(year), y = cantidad_paises, f
   theme_minimal() +
   theme(legend.position = "bottom",
         plot.caption = element_text(hjust = 0))
+
+guardar_grafico(graf_conteo, "conteo_deuda")
   
 # GRAFICO de MEDIANA y MEDIA
 
@@ -125,6 +128,8 @@ graf_mediana <- ggplot(analisis_estadistico, aes(x = income, y = mediana, fill =
     plot.caption = element_text(hjust = 0)
   )
 
+guardar_grafico(graf_mediana, "mediana_deuda")
+
 graf_media <- ggplot(analisis_estadistico, aes(x = income, y = media, fill = income)) +
   geom_col(alpha = 0.8, color = "black") +
   facet_wrap(~year) +
@@ -151,6 +156,8 @@ graf_media <- ggplot(analisis_estadistico, aes(x = income, y = media, fill = inc
     panel.grid.major.x = element_blank(),
     plot.caption = element_text(hjust = 0)
   )
+
+guardar_grafico(graf_media, "media_deuda")
 
 # GRAFICO de HISTOGRAMA
 
@@ -196,4 +203,4 @@ graf_histograma <- ggplot(tabla_limpia, aes(x = deuda_pbi)) +
 
 print(graf_histograma)
 
-
+guardar_grafico(graf_histograma, "histrograma_deuda")
