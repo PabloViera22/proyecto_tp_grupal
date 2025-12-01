@@ -5,11 +5,8 @@ source(here::here("funciones", "funciones_estadistica.R"))
 archivos_en_data()
 vector_income<- c("Upper middle income", "High income","Lower middle income", "Low income")
 # Cargamos los datos del script anterior
-<<<<<<< HEAD
-datos_analisis_na <- cargar_datos(nombre_archivo = "tabla_completa.csv", carpeta = "processed")
-=======
+
 datos_analisis_na<-cargar_datos(nombre_archivo = "tabla_primer_limpieza.csv", carpeta = "processed")
->>>>>>> 1b302cbb87b99d03d944bf51c8f87ffce4b1acdc
 
 analisis<-analizar_na(tabla = datos_analisis_na, grupo = "income")
 print(analisis$por_columna, n=Inf)
