@@ -93,9 +93,7 @@ graf_conteo <- ggplot(datos_conteo, aes(x = factor(year), y = cantidad_paises, f
        x = "",
        y = "Cantidad de Países",
        fill = "Ingreso") +
-  theme_minimal() +
-  theme(legend.position = "bottom",
-        plot.caption = element_text(hjust = 0))
+  tema_proyecto()
 
 guardar_grafico(graf_conteo, "conteo_deuda")
   
@@ -118,15 +116,7 @@ graf_mediana <- ggplot(analisis_estadistico, aes(x = income, y = mediana, fill =
        y = "Deuda Promedio (% PBI)",
        x = "",        
        fill = "Nivel de Ingreso") + 
-  theme_minimal() +
-  theme(
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(), 
-    legend.position = "bottom",
-    strip.text = element_text(size = 12, face = "bold"), 
-    panel.grid.major.x = element_blank(),
-    plot.caption = element_text(hjust = 0)
-  )
+  tema_proyecto()
 
 guardar_grafico(graf_mediana, "mediana_deuda")
 
@@ -147,15 +137,7 @@ graf_media <- ggplot(analisis_estadistico, aes(x = income, y = media, fill = inc
        y = "Deuda Promedio (% PBI)",
        x = "",        
        fill = "Nivel de Ingreso") + 
-  theme_minimal() +
-  theme(
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(), 
-    legend.position = "bottom",
-    strip.text = element_text(size = 12, face = "bold"), 
-    panel.grid.major.x = element_blank(),
-    plot.caption = element_text(hjust = 0)
-  )
+ tema_proyecto()
 
 guardar_grafico(graf_media, "media_deuda")
 
@@ -197,10 +179,9 @@ graf_histograma <- ggplot(tabla_limpia, aes(x = deuda_pbi)) +
     x = "Deuda Pública (% PBI)",
     y = "Densidad"
   ) +
-  theme_minimal() +
-  theme(
-    plot.caption = element_text(hjust = 0))
+  tema_proyecto()
 
 print(graf_histograma)
 
 guardar_grafico(graf_histograma, "histrograma_deuda")
+
