@@ -17,6 +17,23 @@ tema_proyecto <- function() {
     )
 }
 
+tema_boxplot <- function() {
+  theme_minimal() +
+    theme(
+      plot.title = element_text(size = 14, face = "bold"),
+      plot.subtitle = element_text(size = 12, color = "gray60"),
+      axis.title = element_text(size = 11),
+      axis.text = element_text(size = 10),
+      legend.title = element_text(size = 11),
+      legend.text = element_text(size = 10),
+      strip.text = element_text(size = 10, face = "bold"),
+      panel.grid.minor = element_blank(),
+      legend.position = "none",
+      axis.text.x = element_text(size = 10, face = "bold"),
+      plot.caption = element_text(hjust = 0)
+    )
+}
+
 #' Paleta de colores para los ingresos
 paleta_ingresos <- function() {
   scale_fill_manual(values = c(
