@@ -45,7 +45,7 @@ library(tidyverse)
 #library(stringr)
 #library(purrr)
 #library(rlang)
-#library(ggrepel)
+library(ggrepel) # Etiquetas para los grafios de outliers
 
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
