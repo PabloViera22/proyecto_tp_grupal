@@ -28,7 +28,7 @@ medidas_estaditicas<-resumen_estadistico(data =analisis_exploratorio,
                                                vector_col_a_resumir = col_resumir)
 medidas_estaditicas%>% kable(format = "html", caption=" Resumen Estadístico")%>%
   kable_styling(full_width = FALSE)
-
+#GRAFICOS DE DENSIDAD
 graficar_densidad(analisis_exploratorio, variable = deuda_pbi)
 graficar_densidad(analisis_exploratorio, variable = deficit_pbi)
 graficar_densidad(analisis_exploratorio, variable = inflacion)
