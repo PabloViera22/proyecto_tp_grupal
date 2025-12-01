@@ -1,8 +1,10 @@
+source(here::here("config", "parametros.R"))
+source(here::here("funciones", "funciones_para_importar_exportar.R"))
 source(here::here("funciones", "funciones_analisis_na.R"))
 archivos_en_data()
 vector_income<- c("Upper middle income", "High income","Lower middle income", "Low income")
 # Cargamos los datos del script anterior
-datos_analisis_na<-read_csv("D:/Proyecto_Git_TP_Grupal/proyecto_tp_grupal/data//processed/tabla_completa.csv")
+datos_analisis_na <- cargar_datos(nombre_archivo = "tabla_completa.csv", carpeta = "processed")
 
 analisis<-analizar_na(tabla = datos_analisis_na, grupo = "income")
 print(analisis$por_columna, n=Inf)
@@ -42,6 +44,7 @@ datos_indicadores <- datos_analisis_sin_interes %>%
     missing_infla = as.numeric(is.na(inflacion)),
     missing_crecimiento = as.numeric(is.na(crecimiento_pbi)),
   )
+
 # Modelo logístico para predecir ingreso faltante
 modelo_apertura <- glm(missing_apertura ~ formacion_bruta_capital + 
                           pbi_p_c + crecimiento_pbi + consumo_gobierno+
