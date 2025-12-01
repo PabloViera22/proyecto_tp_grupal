@@ -68,9 +68,9 @@ prueba_hipotesis(modelo_regresion_bajo)
 
 # CONCLUSIÓN 
 # los datos no son concluyentes pero no podemos rechazar la hipotesis de que un 
-#aumento de la deuda publica aumente el crecimiento en el corto plazo y lo reduzca
-#en el largo. Esta hipótesis es significatva para el caso en los paises con ingresos
-#medios
+# aumento de la deuda publica aumente el crecimiento en el corto plazo y lo reduzca
+# en el largo. Esta hipótesis es significativa para el caso en los paises con ingresos
+# medios
 
 
 
