@@ -7,12 +7,12 @@ archivos_en_data()
 
 analisis_exploratorio<-cargar_datos(nombre_archivo = "tabla_primer_limpieza.csv", carpeta = "processed")
 analisis_datos_wdi<-cargar_datos(nombre_archivo = "datos_importados_wdi.csv", carpeta = "raw")
-analizar_na_general(tabla = analisis_exploratorio)
+analizar_na_general(tabla = analisis_exploratorio) 
 #==============================================================================#
 # ANALISIS NA DE DATOS DE WDI
-na_de_wdi<-analizar_na_general(analisis_datos_wdi)
+na_de_wdi<-analizar_na_general(analisis_datos_wdi) 
 na_de_wdi%>%kable(format = "html", caption="NA en tabla de WDI")%>%
-  kable_styling(full_width = FALSE)
+  kable_styling(full_width = FALSE) 
 
 #==============================================================================#
 #ANALISIS POR GRUPO
