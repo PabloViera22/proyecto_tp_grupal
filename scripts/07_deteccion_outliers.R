@@ -1,18 +1,18 @@
-# Agregar funciones o parametros, no se bien como se hace. Eliminar cuando ya este
-
-library(ggrepel) # Agregar esta libreria a los nuevos parametros
+source(here::here("config", "parametros.R"))
+source(here::here("funciones", "funciones_para_importar_exportar.R"))
+source(here::here("funciones", "funciones_visualizacion.R"))
 
 # Importacion de scipt anterior
 
-# IMPORTANTE!!
-# Agregar tabla con el nuevo link cuando el repositorio sea publico (borrar comentario cuando se haga)
-tabla_imputar <- read.csv("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/processed/tabla_para_imputacion.csv?token=GHSAT0AAAAAADPYWERTDILAZ5KNJANN25G42JI5MCQ") 
+archivos_en_data()
+
+tabla_limpia <- cargar_datos(nombre_archivo = "tabla_limpia.csv", carpeta = "clean")
 
 #======================================================================
 #                   AÑO 2017: El mundo pre-pandemia                    #                   
 #======================================================================
 
-anio_2017 <- tabla_imputar %>% 
+anio_2017 <- tabla_limpia %>% 
   filter(year == 2017) %>% 
   mutate(income = factor(income, levels = c("High income", 
                                           "Upper middle income", 
@@ -66,18 +66,7 @@ print(paises_outliers_2017)
 
 boxplot_2017 <- ggplot(anio_2017, aes(x = income, y = deuda_pbi, fill = income)) +
   geom_boxplot(alpha = 0.8) + 
-  
-  # Escala de colores manuales
-    
-  scale_fill_manual(values = c(
-    "High income"         = "#2E8B57",  
-    "Upper middle income" = "#9ACD32",  
-    "Lower middle income" = "#FFA500",  
-    "Low income"          = "#CD5C5C"   
-  )) +
-  
-  # Titulos y etiquetas
-  
+  # Titulos
   labs(
     title = "Distribución de la Deuda Pública para el año 2017",
     subtitle = "Ordenado segun ingresos de los paises",
@@ -85,23 +74,15 @@ boxplot_2017 <- ggplot(anio_2017, aes(x = income, y = deuda_pbi, fill = income))
     x = "",
     y = "Deuda como % del PBI"
   ) +
-  
-  # Temas del grafico
-  
-  theme_minimal() +
-  theme(
-    legend.position = "none",
-    axis.text.x = element_text(size = 10, face = "bold"),
-    plot.caption = element_text(hjust = 0)
-  ) +
-      
   # Etiqueta outliers
   
   geom_text_repel(data = paises_outliers_2017,   
                   aes(label = country),     
                   size = 4,                 
                   box.padding = 0.4
-                  )
+                  ) +
+  paleta_ingresos() +
+  tema_boxplot()
 
 print(boxplot_2017)
 
@@ -109,7 +90,7 @@ print(boxplot_2017)
 #                   AÑO 2020: El mundo en pandemia                    #                   
 #======================================================================
   
-anio_2020 <- tabla_imputar %>% 
+anio_2020 <- tabla_limpia %>% 
   filter(year == 2020) %>% 
   mutate(income = factor(income, levels = c("High income", 
                                             "Upper middle income", 
@@ -163,18 +144,7 @@ print(paises_outliers_2020)
 
 boxplot_2020 <- ggplot(anio_2020, aes(x = income, y = deuda_pbi, fill = income)) +
   geom_boxplot(alpha = 0.8) + 
-  
-  # Escala de colores manuales
-  
-  scale_fill_manual(values = c(
-    "High income"         = "#2E8B57",  
-    "Upper middle income" = "#9ACD32",  
-    "Lower middle income" = "#FFA500",  
-    "Low income"          = "#CD5C5C"   
-  )) +
-  
   # Titulos y etiquetas
-  
   labs(
     title = "Distribución de la Deuda Pública para el año 2020",
     subtitle = "Ordenado segun ingresos de los paises",
@@ -182,23 +152,15 @@ boxplot_2020 <- ggplot(anio_2020, aes(x = income, y = deuda_pbi, fill = income))
     x = "",
     y = "Deuda como % del PBI"
   ) +
-  
-  # Temas del grafico
-  
-  theme_minimal() +
-  theme(
-    legend.position = "none",
-    axis.text.x = element_text(size = 10, face = "bold"),
-    plot.caption = element_text(hjust = 0)
-  ) +
-  
   # Etiqueta outliers
   
   geom_text_repel(data = paises_outliers_2020,   
                   aes(label = country),     
                   size = 4,                 
                   box.padding = 0.4
-  )
+  ) +
+  paleta_ingresos() +
+  tema_boxplot()
 
 print(boxplot_2020)
 
@@ -206,7 +168,7 @@ print(boxplot_2020)
 #                   AÑO 2023: El mundo post-pandemia                  #                   
 #======================================================================
 
-anio_2023 <- tabla_imputar %>% 
+anio_2023 <- tabla_limpia %>% 
   filter(year == 2023) %>% 
   mutate(income = factor(income, levels = c("High income", 
                                             "Upper middle income", 
@@ -260,18 +222,7 @@ print(paises_outliers_2023)
 
 boxplot_2023 <- ggplot(anio_2023, aes(x = income, y = deuda_pbi, fill = income)) +
   geom_boxplot(alpha = 0.8) + 
-  
-  # Escala de colores manuales
-  
-  scale_fill_manual(values = c(
-    "High income"         = "#2E8B57",  
-    "Upper middle income" = "#9ACD32",  
-    "Lower middle income" = "#FFA500",  
-    "Low income"          = "#CD5C5C"   
-  )) +
-  
   # Titulos y etiquetas
-  
   labs(
     title = "Distribución de la Deuda Pública para el año 2023",
     subtitle = "Ordenado segun ingresos de los paises",
@@ -279,23 +230,15 @@ boxplot_2023 <- ggplot(anio_2023, aes(x = income, y = deuda_pbi, fill = income))
     x = "",
     y = "Deuda como % del PBI"
   ) +
-  
-  # Temas del grafico
-  
-  theme_minimal() +
-  theme(
-    legend.position = "none",
-    axis.text.x = element_text(size = 10, face = "bold"),
-    plot.caption = element_text(hjust = 0)
-  ) +
-  
   # Etiqueta outliers
   
   geom_text_repel(data = paises_outliers_2023,   
                   aes(label = country),     
                   size = 4,                 
                   box.padding = 0.4
-  )
+  ) +
+  paleta_ingresos() +
+  tema_boxplot()
 
 print(boxplot_2023)
 
@@ -303,7 +246,7 @@ print(boxplot_2023)
 #                   BOXPLOT CONJUNTO                                  #                   
 #======================================================================
 
-anio_todos <- tabla_imputar %>% 
+anio_todos <- tabla_limpia %>% 
   mutate(income = factor(income, levels = c("High income", 
                                             "Upper middle income", 
                                             "Lower middle income", 
@@ -326,26 +269,21 @@ paises_outliers_todos <- anio_todos %>%
 print("Todos los outliers")
 print(paises_outliers_todos)
 
-boxplot_evolucion <- ggplot(tabla_imputar, aes(x = income, y = deuda_pbi, fill = income)) +
+boxplot_evolucion <- ggplot(tabla_limpia, aes(x = income, y = deuda_pbi, fill = income)) +
   geom_boxplot(alpha = 0.8) + 
   facet_wrap(~ year) + # Dividido en tres paneles
-  scale_fill_manual(values = c(
-    "High income"         = "#2E8B57",  
-    "Upper middle income" = "#9ACD32",  
-    "Lower middle income" = "#FFA500",  
-    "Low income"          = "#CD5C5C"   
-  )) +
   labs(
     title = "Evolución de la Deuda Pública (2017 - 2023)",
     subtitle = "Comparación de distribución y outliers por año y nivel de ingreso",
     caption = "Elaboracion propia segun Banco Mundial y Datos Macro",
     x = "",
-    y = "Deuda como % del PBI"
+    y = "Deuda como % del PBI",
+    fill = "Ingreso"
   ) +
   theme_minimal() +
   theme(
-    legend.position = "none",
-    axis.text.x = element_text(size = 8, face = "bold", angle = 45, hjust = 1), 
+    legend.position = "bottom",
+    axis.text.x = element_blank(), 
     plot.caption = element_text(hjust = 0),
     strip.text = element_text(size = 12, face = "bold") 
   ) +
@@ -353,7 +291,8 @@ boxplot_evolucion <- ggplot(tabla_imputar, aes(x = income, y = deuda_pbi, fill =
                   aes(label = country),      
                   size = 3,                  
                   box.padding = 0.4,
-                  max.overlaps = 15 # Un poco más de tolerancia para que muestre varios
-  )
+                  max.overlaps = 15 
+  ) +
+  paleta_ingresos()
 
 print(boxplot_evolucion)
