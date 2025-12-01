@@ -1,5 +1,8 @@
+source(here::here("config", "parametros.R"))
+source(here::here("funciones", "funciones_para_importar_exportar.R"))
+source(here::here("funciones", "funciones_regresion.R"))
 # IMPORTAMOS DATOS
-tabla_regresion<-read.csv("D:/Proyecto_Git_TP_Grupal/proyecto_tp_grupal/data//clean/tabla_limpia.csv")
+tabla_regresion<-cargar_datos(nombre_archivo = "tabla_limpia.csv", carpeta = "clean")
 # HIPOTESIS: DEUDA TIENE REALCION EN FORMA DE U INVERTIDA. EL COEFICIENTE DE DEUDA>0 Y EL COEF. DEUDA^2<0.
 # TEST DE HIPOTESIS 
 # HAY QUE HACER DOS TEST DE HIPOTESIS. 
@@ -12,7 +15,7 @@ tabla_regresion<-read.csv("D:/Proyecto_Git_TP_Grupal/proyecto_tp_grupal/data//cl
 # MODELO REGRESION GENERAL CORROBARCION DE HIPÓTESIS
 #==============================================================================#
 modelo_regresion_general <- lm( crecimiento_pbi~ deuda_pbi + deuda_cuadrada+ deficit_pbi + apertura + formacion_bruta_capital + 
-                          consumo_gobierno + inflacion, data = tabla_regresion)
+                          consumo_gobierno + inflacion+ income, data = tabla_regresion)
 summary(modelo_regresion_general)
 # A PRIMERA VISTA VEMOS QUE NO PODEMOS DETERMINAR EL SIGNO DE DEUDA Y DEUDA CUADRADA
 

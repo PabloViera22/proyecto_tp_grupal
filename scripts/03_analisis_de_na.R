@@ -1,41 +1,52 @@
 source(here::here("config", "parametros.R"))
 source(here::here("funciones", "funciones_para_importar_exportar.R"))
 source(here::here("funciones", "funciones_analisis_na.R"))
+source(here::here("funciones", "funciones_estadistica.R"))
 archivos_en_data()
 vector_income<- c("Upper middle income", "High income","Lower middle income", "Low income")
 # Cargamos los datos del script anterior
+<<<<<<< HEAD
 datos_analisis_na <- cargar_datos(nombre_archivo = "tabla_completa.csv", carpeta = "processed")
+=======
+datos_analisis_na<-cargar_datos(nombre_archivo = "tabla_primer_limpieza.csv", carpeta = "processed")
+>>>>>>> 1b302cbb87b99d03d944bf51c8f87ffce4b1acdc
 
 analisis<-analizar_na(tabla = datos_analisis_na, grupo = "income")
 print(analisis$por_columna, n=Inf)
 print(analisis$total, n=Inf)
-
+analisis$total%>%kable(format = "html", caption="Conteo de NA")%>%
+  kable_styling(full_width = FALSE)
 # justificacion para eliminar los datos:ELIMINAR COLUMNA INTERES QUE NO SIRVA
 #PARA NADA Y TIENE UN MONTON DE FALTANTES
 
 # condicion grupo = Upper middle income, High income,Lower middle income o Low income
-grafico_na_bajos<-analizar_na_grafico(tabla = datos_analisis_na, grupo="Low income")
-grafico_na_medios_bajos<-analizar_na_grafico(tabla = datos_analisis_na, grupo="Lower middle income")
-grafico_na_medios_altos<-analizar_na_grafico(tabla = datos_analisis_na, grupo="Upper middle income")
-grafico_na_altos<-analizar_na_grafico(tabla = datos_analisis_na, grupo="High income")
+analizar_na_grafico(tabla = datos_analisis_na, grupo="Low income")
+analizar_na_grafico(tabla = datos_analisis_na, grupo="Lower middle income")
+analizar_na_grafico(tabla = datos_analisis_na, grupo="Upper middle income")
+analizar_na_grafico(tabla = datos_analisis_na, grupo="High income")
 
-# ELIMINAR COLUMNA INTERES REAL QUE NO SIRVA PARA NADA
-datos_analisis_sin_interes<-datos_analisis_na%>%dplyr::select(-interes_real)
+# GRÁFICO GENERAL
+analizar_na_grafico_general(tabla =datos_analisis_na )
 
+
+
+#==============================================================================#
+# VEMOS SI LOS DATOS SON MCAR CON TEST DE LITTLE
+#==============================================================================#
 # Test de Little para ver si los datos MCAR
-test_de_little(datos = datos_analisis_sin_interes) #capaz haya que haceerlo para cada nivel de ingreso
+test_de_little(datos = datos_analisis_na) #capaz haya que haceerlo para cada nivel de ingreso
 # LOS DATOS PRODRÍAN SER MCAR, BUENISIMO!!
 
 
 #==============================================================================#
 # VEMOS SI SON MAR SI RECHAZAMOS QUE SEAN MCAR
 #==============================================================================#
-colnames(datos_analisis_sin_interes)
+colnames(datos_analisis_na)
 variables_na<-c("formacion_bruta_capital", "apertura", "pbi_p_c", "crecimiento_pbi", "consumo_gobierno", "inflacion")
 var_predictoras<-c("formacion_bruta_capital", "apertura", "pbi_p_c", "crecimiento_pbi",
                    "consumo_gobierno", "inflacion", "deuda_pbi", "deficit_pbi")
 
-datos_indicadores <- datos_analisis_sin_interes %>%
+datos_indicadores <- datos_analisis_na %>%
   mutate(
     missing_apertura = as.numeric(is.na(apertura)),
     missing_fmk = as.numeric(is.na(formacion_bruta_capital)),
@@ -109,9 +120,9 @@ resumen_modelos %>%
 #==============================================================================#
 # Borramos aquellas columnas
 variables_na<-c("formacion_bruta_capital", "apertura", "pbi_p_c", "crecimiento_pbi", "consumo_gobierno", "inflacion")
-datos_analisis_sin_interes
-datos_filtrados <- datos_analisis_sin_interes %>% dplyr::filter(!if_any(all_of(variables_na), is.na))
-nrow(datos_analisis_sin_interes)
+datos_analisis_na
+datos_filtrados <- datos_analisis_na %>% dplyr::filter(!if_any(all_of(variables_na), is.na))
+nrow(datos_analisis_na)
 nrow(datos_filtrados)
 
 
@@ -119,7 +130,7 @@ nrow(datos_filtrados)
 #==============================================================================#
 # EXPORTAMOS LOS DATOS SIN LA COLUMNA INTERES REAL
 #==============================================================================#
-datos_analisis_sin_interes
+datos_analisis_na
 exportar_data(data = datos_filtrados, nombre = "tabla_para_imputacion", carpeta = "processed")
 
 

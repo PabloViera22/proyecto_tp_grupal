@@ -11,10 +11,9 @@ tabla_limpia <- cargar_datos(nombre_archivo = "tabla_limpia.csv", carpeta = "cle
 #======================================================================
 #                   AÑO 2017: El mundo pre-pandemia                    #                   
 #======================================================================
-
 anio_2017 <- tabla_limpia %>% 
-  filter(year == 2017) %>% 
-  mutate(income = factor(income, levels = c("High income", 
+  dplyr::filter(year == 2017) %>% 
+  dplyr::mutate(income = factor(income, levels = c("High income", 
                                           "Upper middle income", 
                                           "Lower middle income", 
                                           "Low income")))
@@ -28,8 +27,8 @@ anio_2017 <- tabla_limpia %>%
 # Analizaremos segun ingreso de cada pais
 
 anio_2017 %>%
-  group_by(income) %>%
-  summarise(
+  dplyr::group_by(income) %>%
+  dplyr::summarise(
     cantida_paises = n_distinct(country),
     mediana = median(deuda_pbi),
     media = mean(deuda_pbi),
@@ -38,7 +37,9 @@ anio_2017 %>%
     minimo = min(deuda_pbi),
     maximo = max(deuda_pbi)
   ) %>% 
-  arrange(income)
+  dplyr::arrange(income)%>%
+  kable(format = "html", caption=" Resumen Estadístico Outliers 2017")%>%
+  kable_styling(full_width = FALSE)
 
 #==================================
 # ANALISIS DEL BOXPLOT y OUTLIERS #
@@ -47,20 +48,21 @@ anio_2017 %>%
 # Outliers dentro de cada grupo
 
 paises_outliers_2017 <- anio_2017 %>% 
-  group_by(income) %>% 
-  mutate(
+  dplyr::group_by(income) %>% 
+  dplyr::mutate(
     Q1 = quantile(deuda_pbi, 0.25),
     Q3 = quantile(deuda_pbi, 0.75),
     IQR = IQR(deuda_pbi),
     techo = Q3 + 1.5*IQR,
     piso = Q1 - 1.5*IQR
   ) %>% 
-  filter(deuda_pbi > techo | deuda_pbi < piso) %>% 
-  select(country, income, pbi_p_c, deuda_pbi) %>% 
-  arrange(desc(deuda_pbi))
+  dplyr::filter(deuda_pbi > techo | deuda_pbi < piso) %>% 
+  dplyr::select(country, income, pbi_p_c, deuda_pbi) %>% 
+  dplyr::arrange(desc(deuda_pbi))
   
-print("Para el año 2017, estos paises fueron outliers dentro de sus grupos: ")
-print(paises_outliers_2017)
+paises_outliers_2017%>%
+  kable(format = "html", caption=" Para el año 2017, estos paises fueron outliers dentro de sus grupos:")%>%
+  kable_styling(full_width = FALSE)
 
 # Grafico del boxplot 
 
@@ -91,8 +93,8 @@ print(boxplot_2017)
 #======================================================================
   
 anio_2020 <- tabla_limpia %>% 
-  filter(year == 2020) %>% 
-  mutate(income = factor(income, levels = c("High income", 
+  dplyr::filter(year == 2020) %>% 
+  dplyr::mutate(income = factor(income, levels = c("High income", 
                                             "Upper middle income", 
                                             "Lower middle income", 
                                             "Low income")))
@@ -106,8 +108,8 @@ anio_2020 <- tabla_limpia %>%
 # Analizaremos segun ingreso de cada pais
 
 anio_2020 %>%
-  group_by(income) %>%
-  summarise(
+  dplyr::group_by(income) %>%
+  dplyr::summarise(
     cantida_paises = n_distinct(country),
     mediana = median(deuda_pbi),
     media = mean(deuda_pbi),
@@ -116,7 +118,10 @@ anio_2020 %>%
     minimo = min(deuda_pbi),
     maximo = max(deuda_pbi)
   ) %>% 
-  arrange(income)
+  dplyr::arrange(income)%>%
+  dplyr::arrange(income)%>%
+  kable(format = "html", caption=" Resumen Estadístico Outliers 2020")%>%
+  kable_styling(full_width = FALSE)
 
 #==================================
 # ANALISIS DEL BOXPLOT y OUTLIERS #
@@ -125,20 +130,21 @@ anio_2020 %>%
 # Outliers dentro de cada grupo
 
 paises_outliers_2020 <- anio_2020 %>% 
-  group_by(income) %>% 
-  mutate(
+  dplyr::group_by(income) %>% 
+  dplyr::mutate(
     Q1 = quantile(deuda_pbi, 0.25),
     Q3 = quantile(deuda_pbi, 0.75),
     IQR = IQR(deuda_pbi),
     techo = Q3 + 1.5*IQR,
     piso = Q1 - 1.5*IQR
   ) %>% 
-  filter(deuda_pbi > techo | deuda_pbi < piso) %>% 
-  select(country, income, pbi_p_c, deuda_pbi) %>% 
-  arrange(desc(deuda_pbi))
+  dplyr::filter(deuda_pbi > techo | deuda_pbi < piso) %>% 
+  dplyr::select(country, income, pbi_p_c, deuda_pbi) %>% 
+  dplyr::arrange(desc(deuda_pbi))
 
-print("Para el año 2020, estos paises fueron outliers dentro de sus grupos: ")
-print(paises_outliers_2020)
+paises_outliers_2020%>%
+  kable(format = "html", caption="Para el año 2020, estos paises fueron outliers dentro de sus grupos:")%>%
+  kable_styling(full_width = FALSE)
 
 # Grafico del boxplot 
 
@@ -169,8 +175,8 @@ print(boxplot_2020)
 #======================================================================
 
 anio_2023 <- tabla_limpia %>% 
-  filter(year == 2023) %>% 
-  mutate(income = factor(income, levels = c("High income", 
+  dplyr::filter(year == 2023) %>% 
+  dplyr::mutate(income = factor(income, levels = c("High income", 
                                             "Upper middle income", 
                                             "Lower middle income", 
                                             "Low income")))
@@ -184,8 +190,8 @@ anio_2023 <- tabla_limpia %>%
 # Analizaremos segun ingreso de cada pais
 
 anio_2023 %>%
-  group_by(income) %>%
-  summarise(
+  dplyr::group_by(income) %>%
+  dplyr::summarise(
     cantida_paises = n_distinct(country),
     mediana = median(deuda_pbi),
     media = mean(deuda_pbi),
@@ -194,7 +200,10 @@ anio_2023 %>%
     minimo = min(deuda_pbi),
     maximo = max(deuda_pbi)
   ) %>% 
-  arrange(income)
+  dplyr::arrange(income)%>%
+  kable(format = "html", caption="Resumen Estadístico Outliers 2023")%>%
+  kable_styling(full_width = FALSE)
+
 
 #==================================
 # ANALISIS DEL BOXPLOT y OUTLIERS #
@@ -203,20 +212,21 @@ anio_2023 %>%
 # Outliers dentro de cada grupo
 
 paises_outliers_2023 <- anio_2023 %>% 
-  group_by(income) %>% 
-  mutate(
+  dplyr::group_by(income) %>% 
+  dplyr::mutate(
     Q1 = quantile(deuda_pbi, 0.25),
     Q3 = quantile(deuda_pbi, 0.75),
     IQR = IQR(deuda_pbi),
     techo = Q3 + 1.5*IQR,
     piso = Q1 - 1.5*IQR
   ) %>% 
-  filter(deuda_pbi > techo | deuda_pbi < piso) %>% 
-  select(country, income, pbi_p_c, deuda_pbi) %>% 
-  arrange(desc(deuda_pbi))
+  dplyr::filter(deuda_pbi > techo | deuda_pbi < piso) %>% 
+  dplyr::select(country, income, pbi_p_c, deuda_pbi) %>% 
+  dplyr::arrange(desc(deuda_pbi))
 
-print("Para el año 2023, estos paises fueron outliers dentro de sus grupos: ")
-print(paises_outliers_2023)
+paises_outliers_2023%>%
+  kable(format = "html", caption="Para el año 2023, estos paises fueron outliers dentro de sus grupos: ")%>%
+  kable_styling(full_width = FALSE)
 
 # Grafico del boxplot 
 
@@ -247,28 +257,31 @@ print(boxplot_2023)
 #======================================================================
 
 anio_todos <- tabla_limpia %>% 
-  mutate(income = factor(income, levels = c("High income", 
+  dplyr::mutate(income = factor(income, levels = c("High income", 
                                             "Upper middle income", 
                                             "Lower middle income", 
                                             "Low income")))
-
+# DETECCION DE OUTLIERS
 paises_outliers_todos <- anio_todos %>%
-  group_by(year, income) %>% 
-  mutate(
+  dplyr::group_by(year, income) %>% 
+  dplyr::mutate(
     Q1 = quantile(deuda_pbi, 0.25),
     Q3 = quantile(deuda_pbi, 0.75),
     IQR = IQR(deuda_pbi),
     techo = Q3 + 1.5 * IQR,
     piso  = Q1 - 1.5 * IQR
   ) %>%
-  ungroup() %>%
-  filter(deuda_pbi > techo | deuda_pbi < piso) %>% 
-  select(country, year, income, pbi_p_c, deuda_pbi) %>% 
-  arrange(desc(deuda_pbi))
+  dplyr::ungroup() %>%
+  dplyr::filter(deuda_pbi > techo | deuda_pbi < piso) %>% 
+  dplyr::select(country, year, income, pbi_p_c, deuda_pbi) %>% 
+  dplyr::arrange(desc(deuda_pbi))
 
-print("Todos los outliers")
-print(paises_outliers_todos)
+#TABLA
+paises_outliers_todos%>%
+  kable(format = "html", caption="Todos los outliers")%>%
+  kable_styling(full_width = FALSE)
 
+#GRAFICO
 boxplot_evolucion <- ggplot(tabla_limpia, aes(x = income, y = deuda_pbi, fill = income)) +
   geom_boxplot(alpha = 0.8) + 
   facet_wrap(~ year) + # Dividido en tres paneles
@@ -294,5 +307,5 @@ boxplot_evolucion <- ggplot(tabla_limpia, aes(x = income, y = deuda_pbi, fill = 
                   max.overlaps = 15 
   ) +
   paleta_ingresos()
-
+#MOSTRAR GRAFICO
 print(boxplot_evolucion)

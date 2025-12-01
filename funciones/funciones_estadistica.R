@@ -26,7 +26,7 @@ resumen_estadistico_grupo <- function(data,
       dplyr::group_by(.data[[grupo]]) %>%
       summarise(
         variable = variable,
-        cantidad_paises = dplyr::n_distinct(.data[[name_col_country]]),
+        cantidad_datos = dplyr::n_distinct(.data[[name_col_country]]),
         mediana = median(.data[[variable]], na.rm = TRUE),
         media   = mean(.data[[variable]], na.rm = TRUE),
         desvio  = sd(.data[[variable]], na.rm = TRUE),
@@ -89,7 +89,33 @@ graficar_densidad <- function(tabla, variable) {
 }
 
 
+#==============================================================================#
+# COMPARAR DOS TABLAS IGUALES
 
+restar_tablas_relativas <- function(tablanueva, tablavieja) {
+  
+  # Validaciones
+  if (!is.data.frame(tablanueva) || !is.data.frame(tablavieja)) {
+    stop("Ambos objetos deben ser data frames.")
+  }
+  
+  if (!all(names(tablanueva) == names(tablavieja))) {
+    stop("Las dos tablas deben tener exactamente los mismos nombres de columnas.")
+  }
+  
+  if (nrow(tablanueva) != nrow(tablavieja)) {
+    stop("Las dos tablas deben tener el mismo número de filas.")
+  }
+  
+  # Identificar columnas numéricas
+  cols_num <- names(tablanueva)[sapply(tablanueva, is.numeric)]
+  
+  # Cálculo relativo para columnas numéricas
+  tabla_resultado <- tablanueva
+  tabla_resultado[cols_num] <- (tablanueva[cols_num] - tablavieja[cols_num]) / tablavieja[cols_num]
+  
+  return(tabla_resultado)
+}
 
 
 

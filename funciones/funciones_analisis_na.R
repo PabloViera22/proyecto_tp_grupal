@@ -34,17 +34,44 @@ analizar_na_grafico<-function(tabla,grupo){
   var_grupo<-paste("Proporción de faltantes:",grupo)
   patron_grupo<-paste("Patrón de combinación:", grupo)
   
-  variables_key <- c("crecimiento_pbi", "pbi_p_c","interes_real", "inflacion","formacion_bruta_capital", "consumo_gobierno","apertura")
+  variables_key <- c("crecimiento_pbi", "pbi_p_c", "inflacion","formacion_bruta_capital", "consumo_gobierno","apertura")
   filtro<-tabla%>%filter(income==grupo)  
   aggr(filtro[, variables_key],
        col = c('steelblue', 'red'), 
        numbers = TRUE,
        sortVars = TRUE,
-       labels = c("crecimiento", "pbi_p_c","interes_real", "inflacion","FMK", "consumo","apertura"),
+       labels = c("crecimiento", "pbi_p_c", "inflacion","FMK", "consumo","apertura"),
        cex.axis = 0.8,
        gap = 3,
        ylab = c(var_grupo,patron_grupo))
   }
+#==============================================================================#
+# misma funcion pero general
+analizar_na_grafico_general <- function(tabla) {
+    # Validación: debe ser un data frame
+  if (!is.data.frame(tabla)) {stop("El objeto 'tabla' debe ser un data frame.")}
+    # Lista de variables numéricas sobre las que querés evaluar NA
+  variables_key <- c(
+    "crecimiento_pbi", "pbi_p_c", "inflacion",
+    "formacion_bruta_capital", "consumo_gobierno", "apertura")
+    # Verificar que las variables existan
+  faltantes <- setdiff(variables_key, names(tabla))
+  if (length(faltantes) > 0) {
+    stop(paste("Estas variables no existen en la tabla:", paste(faltantes, collapse = ", ")))
+  }
+  # Gráfico general sin segmentar por grupos
+  aggr(
+    tabla[, variables_key],
+    col        = c("steelblue", "red"),
+    numbers    = TRUE,
+    sortVars   = TRUE,
+    labels     = c("crecimiento", "pbi_p_c", "inflacion", "FMK", "consumo", "apertura"),
+    cex.axis   = 0.8,
+    gap        = 3,
+    ylab       = c("Proporción de faltantes", "Patrón de combinación")
+  )
+}
+
 
 #==============================================================================#
 # TEST DE LITTLE

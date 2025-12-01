@@ -2,7 +2,7 @@
 # IMPUTACION MULTIPLE
 #==============================================================================#
 vector_columna<-c("consumo_gobierno", "apertura", "formacion_bruta_capital",
-                  "interes_real")
+                  "funciones_para_imputar.R")
 # Seleccionar variables para imputación
 imputacion_multiple<-function(datos, vector_columna){
   vars_mice <- datos %>%
