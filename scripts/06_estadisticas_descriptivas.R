@@ -99,6 +99,8 @@ guardar_grafico(graf_conteo, "conteo_deuda")
   
 # GRAFICO de MEDIANA y MEDIA
 
+# MEDIANA
+
 graf_mediana <- ggplot(analisis_estadistico, aes(x = income, y = mediana, fill = income)) +
   geom_col(alpha = 0.8, color = "black") +
   facet_wrap(~year) +
@@ -116,9 +118,15 @@ graf_mediana <- ggplot(analisis_estadistico, aes(x = income, y = mediana, fill =
        y = "Deuda Promedio (% PBI)",
        x = "",        
        fill = "Nivel de Ingreso") + 
-  tema_proyecto()
+  tema_proyecto() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
 
 guardar_grafico(graf_mediana, "mediana_deuda")
+
+# MEDIA
 
 graf_media <- ggplot(analisis_estadistico, aes(x = income, y = media, fill = income)) +
   geom_col(alpha = 0.8, color = "black") +
@@ -137,7 +145,11 @@ graf_media <- ggplot(analisis_estadistico, aes(x = income, y = media, fill = inc
        y = "Deuda Promedio (% PBI)",
        x = "",        
        fill = "Nivel de Ingreso") + 
- tema_proyecto()
+ tema_proyecto() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
 
 guardar_grafico(graf_media, "media_deuda")
 
