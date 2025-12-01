@@ -1,10 +1,11 @@
-# Agregar funciones o parametros, no se bien como se hace. Eliminar cuando ya este
-
-library(ggrepel) # Agregar esta libreria a los nuevos parametros
+source(here::here("config", "parametros.R"))
+source(here::here("funciones", "funciones_para_importar_exportar.R"))
 
 # Importacion de scipt anterior
 
-tabla_imputar <- read.csv("https://raw.githubusercontent.com/PabloViera22/proyecto_tp_grupal/refs/heads/main/data/processed/tabla_para_imputacion.csv") 
+archivos_en_data()
+
+tabla_limpia <- cargar_datos(nombre_archivo = "tabla_limpia.csv", carpeta = "clean")
 
 #====================================
 #      TABLA DE ANALISIS            #
@@ -12,7 +13,7 @@ tabla_imputar <- read.csv("https://raw.githubusercontent.com/PabloViera22/proyec
 
 # ANALISIS GENERAL
 
-analisis_estadistico <- tabla_imputar %>% 
+analisis_estadistico <- tabla_limpia %>% 
   group_by(income, year) %>% 
   summarise(
     cantida_paises = n_distinct(country),
@@ -34,7 +35,7 @@ analisis_estadistico <- tabla_imputar %>%
                                             "Low income")))
 # ANALISIS CONTEO DE PAISES
 
-datos_conteo <- tabla_imputar %>%
+datos_conteo <- tabla_limpia %>%
   mutate(income = factor(income, levels = c("High income", 
                                             "Upper middle income", 
                                             "Lower middle income", 
@@ -51,7 +52,7 @@ totales_por_anio <- datos_conteo %>%
 
 # ANALISIS DE MEDIA y MEDIANA
 
-metricas_por_anio <- tabla_imputar %>%
+metricas_por_anio <- tabla_limpia %>%
   group_by(year) %>%
   summarise(
     media   = mean(deuda_pbi, na.rm = TRUE),
@@ -153,7 +154,7 @@ graf_media <- ggplot(analisis_estadistico, aes(x = income, y = media, fill = inc
 
 # GRAFICO de HISTOGRAMA
 
-graf_histograma <- ggplot(tabla_imputar, aes(x = deuda_pbi)) +
+graf_histograma <- ggplot(tabla_limpia, aes(x = deuda_pbi)) +
   # Histograma
   geom_histogram(aes(y = after_stat(density)), 
                  bins = 25, 
