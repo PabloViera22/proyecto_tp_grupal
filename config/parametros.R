@@ -26,7 +26,7 @@ library(tidyverse)
 library(naniar) # Librería para analizar datos faltantes
 #library(eurostat)
 library(VIM)   # Librería clásica para visualizar datos faltantes
-#library(mice)         # Imputación múltiple
+library(mice)         # Imputación múltiple
 #library(Hmisc)        # Herramientas estadísticas
 library(kableExtra)   # Tablas mejoradas
 #library(patchwork)    # Combinar gráficos
