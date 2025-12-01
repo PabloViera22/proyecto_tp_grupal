@@ -18,7 +18,6 @@ tema_proyecto <- function() {
 }
 
 #' Paleta de colores para los ingresos
-#'
 paleta_ingresos <- function() {
   scale_fill_manual(values = c(
     "High income"         = "#2E8B57",
