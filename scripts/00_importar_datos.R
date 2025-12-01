@@ -37,13 +37,11 @@ datos_wdi_mas_macro <- datos_wdi %>%
     deuda_deficit,
     by = c("iso3c", "year" = "fecha", "country" = "paises")
   ) %>%
-  rename(anio = year) %>%
-  rename(pais = country) %>%
-  filter(anio %in% c(2017, 2020, 2023)) %>%
+  filter(year %in% c(2017, 2020, 2023)) %>%
   dplyr::select(-c(iso2c, deuda_gob))
   
 # Exporta tabla del join
-exportar_data(data = datos_wdi_mas_macro, nombre = tabla_completa, carpeta = "processed")
+exportar_data(data = datos_wdi_mas_macro, nombre = "tabla_completa", carpeta = "processed")
 
 #==============================================================================#
 
