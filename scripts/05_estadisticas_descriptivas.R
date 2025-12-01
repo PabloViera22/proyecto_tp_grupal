@@ -1,19 +1,35 @@
 source(here::here("config", "parametros.R"))
 source(here::here("funciones", "funciones_para_importar_exportar.R"))
 source(here::here("funciones", "funciones_visualizacion.R"))
+source(here::here("funciones", "funciones_estadistica.R"))
 
 # Importacion de scipt anterior
-
 archivos_en_data()
-
 tabla_limpia <- cargar_datos(nombre_archivo = "tabla_limpia.csv", carpeta = "clean")
 
-#====================================
+datos_viejos<-cargar_datos(nombre_archivo = "tabla_primer_limpieza.csv", carpeta = "processed")#para comparacion
+#====================================#
 #      TABLA DE ANALISIS            #
-#====================================
-
+#====================================#
 # ANALISIS GENERAL
+col_resumir<-c("deuda_pbi", "deficit_pbi", "formacion_bruta_capital", "inflacion", "consumo_gobierno")
+medidas_estaditicas<-resumen_estadistico(data =tabla_limpia, 
+                                         vector_col_a_resumir = col_resumir)#datos nuevos
+medidas_estaditicas_anterior<-resumen_estadistico(data =datos_viejos, 
+                                                  vector_col_a_resumir = col_resumir)#para comparar
 
+medidas_estaditicas%>% kable(format = "html", caption=" Resumen Estadístico Con Tabla Limpia")%>%
+  kable_styling(full_width = FALSE)#cuadro de los nuevos datos
+
+restar_tablas_relativas(medidas_estaditicas,medidas_estaditicas_anterior)%>% kable(format = "html", caption="Cambio en variables")%>%
+  kable_styling(full_width = FALSE)
+#GRAFICOS DE DENSIDAD
+graficar_densidad(tabla_limpia, variable = deuda_pbi) #SE PUEDEN COMPRAR CON EL ANTERIOR
+graficar_densidad(tabla_limpia, variable = deficit_pbi)#SE PUEDEN COMPRAR CON EL ANTERIOR
+graficar_densidad(tabla_limpia, variable = inflacion)#SE PUEDEN COMPRAR CON EL ANTERIOR
+graficar_densidad(tabla_limpia, variable = formacion_bruta_capital)#SE PUEDEN COMPRAR CON EL ANTERIOR
+
+# ANALISIS GRUPO
 analisis_estadistico <- tabla_limpia %>% 
   group_by(income, year) %>% 
   summarise(
