@@ -115,7 +115,7 @@ graf_mediana <- ggplot(analisis_estadistico, aes(x = income, y = mediana, fill =
   labs(title = "Evolución de la Deuda Mediana",
        subtitle = "Comparación por nivel de ingreso",
        caption = "Elaboración propia segun Banco Mundial y Datos Macro",
-       y = "Deuda Promedio (% PBI)",
+       y = "Mediana Deuda (% PBI)",
        x = "",        
        fill = "Nivel de Ingreso") + 
   tema_proyecto() +
