@@ -23,9 +23,9 @@ library(tidyverse)
 #library(lubridate)
 #library(scales)
 #library(readr)
-library(naniar) # Libreria para analizar datos faltantes
+library(naniar) # Librería para analizar datos faltantes
 #library(eurostat)
-#library(VIM)
+library(VIM)   # Librería clásica para visualizar datos faltantes
 #library(mice)         # Imputación múltiple
 #library(Hmisc)        # Herramientas estadísticas
 library(kableExtra)   # Tablas mejoradas
