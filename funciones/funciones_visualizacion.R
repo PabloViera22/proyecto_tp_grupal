@@ -17,14 +17,16 @@ tema_proyecto <- function() {
     )
 }
 
-#' Paleta de colores estándar del proyecto
-colores_proyecto <- c(
-  primario = "#2E86C1",
-  secundario = "#E74C3C", 
-  terciario = "#F39C12",
-  gris_claro = "#BDC3C7",
-  gris_oscuro = "#34495E"
-)
+#' Paleta de colores para los ingresos
+#'
+paleta_ingresos <- function() {
+  scale_fill_manual(values = c(
+    "High income"         = "#2E8B57",
+    "Upper middle income" = "#9ACD32",
+    "Lower middle income" = "#FFA500",
+    "Low income"          = "#CD5C5C"
+  ))
+}
 
 #' Guardar gráfico con formato estándar
 #' @param plot objeto ggplot
