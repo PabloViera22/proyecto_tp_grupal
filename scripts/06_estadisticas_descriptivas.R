@@ -81,12 +81,7 @@ graf_conteo <- ggplot(datos_conteo, aes(x = factor(year), y = cantidad_paises, f
              vjust = -0.25,          # 0 = Apoyado justo sobre la línea final de la barra
              label.size = 0.5    # Grosor del borde del cuadrito (0 = sin borde)
   ) +
-  scale_fill_manual(values = c(
-    "High income"         = "#2E8B57",
-    "Upper middle income" = "#9ACD32",
-    "Lower middle income" = "#FFA500",
-    "Low income"          = "#CD5C5C"
-  )) +
+  paleta_ingresos() +
   labs(title = "Composición de la Muestra por Nivel de Ingreso",
        subtitle = "Cantidad de países en cada categoría por año",
        caption = "Elaboración propia segun Banco Mundial y Datos Macro",
@@ -106,12 +101,7 @@ graf_mediana <- ggplot(analisis_estadistico, aes(x = income, y = mediana, fill =
   facet_wrap(~year) +
   geom_text(aes(label = round(mediana, 1)), 
             vjust = -0.5, size = 3.5, fontface = "bold") +
-  scale_fill_manual(values = c(
-    "High income"         = "#2E8B57",
-    "Upper middle income" = "#9ACD32",
-    "Lower middle income" = "#FFA500",
-    "Low income"          = "#CD5C5C"
-  )) +
+  paleta_ingresos() +
   labs(title = "Evolución de la Deuda Mediana",
        subtitle = "Comparación por nivel de ingreso",
        caption = "Elaboración propia segun Banco Mundial y Datos Macro",
@@ -133,12 +123,7 @@ graf_media <- ggplot(analisis_estadistico, aes(x = income, y = media, fill = inc
   facet_wrap(~year) +
   geom_text(aes(label = round(media, 1)), 
             vjust = -0.5, size = 3.5, fontface = "bold") +
-  scale_fill_manual(values = c(
-    "High income"         = "#2E8B57",
-    "Upper middle income" = "#9ACD32",
-    "Lower middle income" = "#FFA500",
-    "Low income"          = "#CD5C5C"
-  )) +
+  paleta_ingresos() +
   labs(title = "Evolución de la Deuda Promedio (Media)",
        subtitle = "Comparación por nivel de ingreso",
        caption = "Elaboración propia segun Banco Mundial y Datos Macro",
