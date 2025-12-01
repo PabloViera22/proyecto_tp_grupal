@@ -4,7 +4,7 @@ source(here::here("funciones", "funciones_para_importar_exportar.R"))
 # Importar los datos del banco mundial
 datos_crudos <- WDI(country = "all", indicator = indicadores,
               start = 1990, 
-              end = 2024)
+              end = 2024) # Tarda mucho en descargar, mejor no probar
 # Exportar los datos a la carpeta raw
 exportar_data(data = datos_crudos,nombre = "datos_importados_wdi", carpeta = "raw", format = "csv")
 
@@ -37,13 +37,11 @@ datos_wdi_mas_macro <- datos_wdi %>%
     deuda_deficit,
     by = c("iso3c", "year" = "fecha", "country" = "paises")
   ) %>%
-  rename(anio = year) %>%
-  rename(pais = country) %>%
-  filter(anio %in% c(2017, 2020, 2023)) %>%
+  filter(year %in% c(2017, 2020, 2023)) %>%
   dplyr::select(-c(iso2c, deuda_gob))
   
 # Exporta tabla del join
-exportar_data(data = datos_wdi_mas_macro, nombre = tabla_completa, carpeta = "processed")
+exportar_data(data = datos_wdi_mas_macro, nombre = "tabla_completa", carpeta = "processed")
 
 #==============================================================================#
 

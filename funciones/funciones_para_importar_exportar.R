@@ -1,4 +1,3 @@
-source(here::here("config", "parametros.R"))
 #==============================================================================#
 # FUNCION PARA EXPORTAR
 #==============================================================================#
@@ -70,8 +69,8 @@ cargar_datos <- function(nombre_archivo, carpeta = "raw", encoding = "UTF-8") {
   ruta_carpeta <- switch(carpeta,
                          "raw" = dir_data_raw,
                          "processed" = dir_data_processed, 
-                         "external" = dir_data_external,
-                         stop("Carpeta debe ser 'raw', 'processed' o 'external'"))
+                         "clean" = dir_data_clean,
+                         stop("Carpeta debe ser 'raw', 'processed' o 'clean'"))
   
   ruta_completa <- file.path(ruta_carpeta, nombre_archivo)
     # Verificar que el archivo existe
