@@ -3,7 +3,7 @@ source(here::here("funciones", "funciones_para_importar_exportar.R"))
 
 # Importar los datos del banco mundial
 datos_crudos <- WDI(country = "all", indicator = indicadores,
-              start = 1990, 
+              start = 2017, 
               end = 2024) # Tarda mucho en descargar, mejor no probar
 # Exportar los datos a la carpeta raw
 exportar_data(data = datos_crudos,nombre = "datos_importados_wdi", carpeta = "raw", format = "csv")
