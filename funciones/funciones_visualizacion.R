@@ -49,6 +49,8 @@ paleta_ingresos <- function() {
 #' @param nombre_archivo nombre sin extensión
 #' @param ancho ancho en pulgadas
 #' @param alto alto en pulgadas
+
+
 guardar_grafico <- function(plot, nombre_archivo, ancho = 10, alto = 6) {
   
   # Crear nombre con fecha
@@ -72,3 +74,4 @@ guardar_grafico <- function(plot, nombre_archivo, ancho = 10, alto = 6) {
   
   mensaje_exito(paste("Gráfico guardado:", nombre_completo))
 }
+

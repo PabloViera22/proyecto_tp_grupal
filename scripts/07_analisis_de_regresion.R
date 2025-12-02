@@ -66,7 +66,7 @@ summary(modelo_regresion_general)
 # A PRIMERA VISTA VEMOS QUE NO PODEMOS DETERMINAR EL SIGNO DE DEUDA Y DEUDA CUADRADA
 
 # PRUEBA HIPTESIS
-prueba_hipotesis(modelo_regresion_general)
+prueba_hipotesis(modelo_regresion_general,titulo = "Resultado de la Regresión General")
 #==============================================================================#
 # REGRESION PARA INGRESO ALTO
 #==============================================================================#
@@ -76,7 +76,7 @@ modelo_regresion_alto <- lm( crecimiento_pbi~ deuda_pbi + deuda_cuadrada+ defici
 summary(modelo_regresion_alto)
 
 # PRUEBA HIPTESIS
-prueba_hipotesis(modelo_regresion_alto)
+prueba_hipotesis(modelo_regresion_alto,titulo = "Resultado de la Regresión General para Ingresos Altos")
 #==============================================================================#
 # REGRESION PARA INGRESO MEDIO
 #==============================================================================#
@@ -86,7 +86,7 @@ modelo_regresion_medio <- lm( crecimiento_pbi~ deuda_pbi + deuda_cuadrada+ defic
 summary(modelo_regresion_medio)
 
 # PRUEBA HIPTESIS
-prueba_hipotesis(modelo_regresion_medio)
+prueba_hipotesis(modelo_regresion_medio,titulo = "Resultado de la Regresión General para Ingresos Medios")
 
 
 #==============================================================================#
@@ -98,7 +98,7 @@ modelo_regresion_medio_bajo <- lm( crecimiento_pbi~ deuda_pbi + deuda_cuadrada+ 
 summary(modelo_regresion_medio_bajo)
 
 # PRUEBA HIPTESIS
-prueba_hipotesis(modelo_regresion_medio_bajo)
+prueba_hipotesis(modelo_regresion_medio_bajo,titulo = "Resultado de la Regresión General para Ingresos Medios-Bajos")
 
 
 #==============================================================================#
@@ -110,7 +110,7 @@ modelo_regresion_bajo <- lm( crecimiento_pbi~ deuda_pbi + deuda_cuadrada+ defici
 summary(modelo_regresion_bajo)
 
 # PRUEBA HIPTESIS
-prueba_hipotesis(modelo_regresion_bajo)
+prueba_hipotesis(modelo_regresion_bajo,titulo = "Resultado de la Regresión para Ingresos Bajos")
 
 # CONCLUSIÓN 
 # los datos no son concluyentes pero no podemos rechazar la hipotesis de que un 
