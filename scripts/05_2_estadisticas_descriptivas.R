@@ -34,16 +34,16 @@ analisis_estadistico <- tabla_limpia %>%
   group_by(income, year) %>% 
   summarise(
     cantida_paises = n_distinct(country),
-    mediana = median(deuda_pbi),
-    media = mean(deuda_pbi),
-    desvio = sd(deuda_pbi),
-    iqr = IQR(deuda_pbi),
-    minimo = min(deuda_pbi),
-    maximo = max(deuda_pbi),
-    percentil_5 = quantile(deuda_pbi, probs = 0.05),
-    cuartil_1 = quantile(deuda_pbi, probs = 0.25),
-    cuartil_3 = quantile(deuda_pbi, probs = 0.75),
-    percentil_95 = quantile(deuda_pbi, probs = 0.95),
+    mediana = median(crecimiento_pbi),
+    media = mean(crecimiento_pbi),
+    desvio = sd(crecimiento_pbi),
+    iqr = IQR(crecimiento_pbi),
+    minimo = min(crecimiento_pbi),
+    maximo = max(crecimiento_pbi),
+    percentil_5 = quantile(crecimiento_pbi, probs = 0.05),
+    cuartil_1 = quantile(crecimiento_pbi, probs = 0.25),
+    cuartil_3 = quantile(crecimiento_pbi, probs = 0.75),
+    percentil_95 = quantile(crecimiento_pbi, probs = 0.95),
   ) %>% 
   ungroup() %>% 
   mutate(income = factor(income, levels = c("High income", 
@@ -72,8 +72,8 @@ totales_por_anio <- datos_conteo %>%
 metricas_por_anio <- tabla_limpia %>%
   group_by(year) %>%
   summarise(
-    media   = mean(deuda_pbi, na.rm = TRUE),
-    mediana = median(deuda_pbi, na.rm = TRUE)
+    media   = mean(crecimiento_pbi, na.rm = TRUE),
+    mediana = median(crecimiento_pbi, na.rm = TRUE)
   )
 
 #====================================
@@ -106,7 +106,7 @@ graf_conteo <- ggplot(datos_conteo, aes(x = factor(year), y = cantidad_paises, f
        fill = "Ingreso") +
   tema_proyecto()
 
-guardar_grafico(graf_conteo, "conteo_deuda")
+guardar_grafico(graf_conteo, "conteo_crecimiento")
   
 # GRAFICO de MEDIANA y MEDIA
 
@@ -118,10 +118,10 @@ graf_mediana <- ggplot(analisis_estadistico, aes(x = income, y = mediana, fill =
   geom_text(aes(label = round(mediana, 1)), 
             vjust = -0.5, size = 3.5, fontface = "bold") +
   paleta_ingresos() +
-  labs(title = "Evolución de la Deuda Mediana",
+  labs(title = "Evolución de la Mediana del Crecimiento",
        subtitle = "Comparación por nivel de ingreso",
        caption = "Elaboración propia segun Banco Mundial y Datos Macro",
-       y = "Mediana Deuda (% PBI)",
+       y = "Crecimiento",
        x = "",        
        fill = "Nivel de Ingreso") + 
   tema_proyecto() +
@@ -130,7 +130,7 @@ graf_mediana <- ggplot(analisis_estadistico, aes(x = income, y = mediana, fill =
     axis.ticks.x = element_blank()
   )
 
-guardar_grafico(graf_mediana, "mediana_deuda")
+guardar_grafico(graf_mediana, "mediana_crecimiento")
 
 # MEDIA
 
@@ -140,10 +140,10 @@ graf_media <- ggplot(analisis_estadistico, aes(x = income, y = media, fill = inc
   geom_text(aes(label = round(media, 1)), 
             vjust = -0.5, size = 3.5, fontface = "bold") +
   paleta_ingresos() +
-  labs(title = "Evolución de la Deuda Promedio (Media)",
+  labs(title = "Evolución del Crecimiento Promedio (Media)",
        subtitle = "Comparación por nivel de ingreso",
        caption = "Elaboración propia segun Banco Mundial y Datos Macro",
-       y = "Deuda Promedio (% PBI)",
+       y = "Crecimiento",
        x = "",        
        fill = "Nivel de Ingreso") + 
  tema_proyecto() +
@@ -152,11 +152,11 @@ graf_media <- ggplot(analisis_estadistico, aes(x = income, y = media, fill = inc
     axis.ticks.x = element_blank()
   )
 
-guardar_grafico(graf_media, "media_deuda")
+guardar_grafico(graf_media, "media_crecimiento")
 
 # GRAFICO de HISTOGRAMA
 
-graf_histograma <- ggplot(tabla_limpia, aes(x = deuda_pbi)) +
+graf_histograma <- ggplot(tabla_limpia, aes(x = crecimiento_pbi)) +
   # Histograma
   geom_histogram(aes(y = after_stat(density)), 
                  bins = 25, 
@@ -186,15 +186,17 @@ graf_histograma <- ggplot(tabla_limpia, aes(x = deuda_pbi)) +
   facet_wrap(~year , ncol = 1) +
   
   labs(
-    title = "Distribucion de la Deuda Pública",
+    title = "Distribucion del Crecimiento",
     subtitle = "Rojo (Sólida) = Mediana | Azul (Punteada) = Media",
     caption = "Elaboración propia segun Banco Mundial y Datos Macro",
-    x = "Deuda Pública (% PBI)",
+    x = "Crecimiento",
     y = "Densidad"
   ) +
   tema_proyecto()
 
 print(graf_histograma)
 
-guardar_grafico(graf_histograma, "histrograma_deuda")
+guardar_grafico(graf_histograma, "histrograma_crecimiento")
+
+
 
