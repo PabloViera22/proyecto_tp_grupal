@@ -38,3 +38,9 @@ prueba_hipotesis <- function(modelo_de_regresion,titulo) {
   tabla%>% kable(format = "html", caption=titulo)%>%
     kable_styling(full_width = FALSE)
 }
+
+
+tabla_summary_regresion <- function(modelo, texto){tidy(modelo) %>%
+  kable(format = "html", digits = 3, caption = paste("Resumen del Modelo ", texto)) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover"))
+}

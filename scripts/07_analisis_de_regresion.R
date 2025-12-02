@@ -67,6 +67,7 @@ summary(modelo_regresion_general)
 
 # PRUEBA HIPTESIS
 prueba_hipotesis(modelo_regresion_general,titulo = "Resultado de la Regresión General")
+tabla_summary_regresion(modelo = modelo_regresion_general, texto="General")
 #==============================================================================#
 # REGRESION PARA INGRESO ALTO
 #==============================================================================#
@@ -77,6 +78,7 @@ summary(modelo_regresion_alto)
 
 # PRUEBA HIPTESIS
 prueba_hipotesis(modelo_regresion_alto,titulo = "Resultado de la Regresión General para Ingresos Altos")
+tabla_summary_regresion(modelo = modelo_regresion_alto, texto="para Ingresos Altos")
 #==============================================================================#
 # REGRESION PARA INGRESO MEDIO
 #==============================================================================#
@@ -87,7 +89,7 @@ summary(modelo_regresion_medio)
 
 # PRUEBA HIPTESIS
 prueba_hipotesis(modelo_regresion_medio,titulo = "Resultado de la Regresión General para Ingresos Medios")
-
+tabla_summary_regresion(modelo = modelo_regresion_medio, texto="para Ingresos Medios")
 
 #==============================================================================#
 # REGRESION PARA INGRESO MEDIO BAJO
@@ -99,7 +101,7 @@ summary(modelo_regresion_medio_bajo)
 
 # PRUEBA HIPTESIS
 prueba_hipotesis(modelo_regresion_medio_bajo,titulo = "Resultado de la Regresión General para Ingresos Medios-Bajos")
-
+tabla_summary_regresion(modelo = modelo_regresion_medio_bajo, texto="para Ingresos Medios-Bajos")
 
 #==============================================================================#
 # REGRESION PARA INGRESO BAJO
@@ -111,6 +113,7 @@ summary(modelo_regresion_bajo)
 
 # PRUEBA HIPTESIS
 prueba_hipotesis(modelo_regresion_bajo,titulo = "Resultado de la Regresión para Ingresos Bajos")
+tabla_summary_regresion(modelo = modelo_regresion_bajo, texto="para Ingresos Bajos")
 
 # CONCLUSIÓN 
 # los datos no son concluyentes pero no podemos rechazar la hipotesis de que un 
