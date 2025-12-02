@@ -46,6 +46,7 @@ library(kableExtra)   # Tablas mejoradas
 #library(purrr)
 #library(rlang)
 library(ggrepel) # Etiquetas para los grafios de outliers
+library(stargazer)
 
 # DEFINIR DIRECTORIO DE MANERA RERODUCIBLE
 if (!exists("proyecto_tp_grupal")) {
