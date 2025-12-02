@@ -86,7 +86,7 @@ boxplot_2017 <- ggplot(anio_2017, aes(x = income, y = deuda_pbi, fill = income))
   paleta_ingresos() +
   tema_boxplot()
 
-print(boxplot_2017)
+guardar_grafico(boxplot_2017, "boxplot_2017")
 
 #======================================================================
 #                   AÑO 2020: El mundo en pandemia                    #                   
@@ -168,7 +168,7 @@ boxplot_2020 <- ggplot(anio_2020, aes(x = income, y = deuda_pbi, fill = income))
   paleta_ingresos() +
   tema_boxplot()
 
-print(boxplot_2020)
+guardar_grafico(boxplot_2020, "boxplot_2020")
 
 #======================================================================
 #                   AÑO 2023: El mundo post-pandemia                  #                   
@@ -250,7 +250,7 @@ boxplot_2023 <- ggplot(anio_2023, aes(x = income, y = deuda_pbi, fill = income))
   paleta_ingresos() +
   tema_boxplot()
 
-print(boxplot_2023)
+guardar_grafico(boxplot_2023, "boxplot_2023")
 
 #======================================================================
 #                   BOXPLOT CONJUNTO                                  #                   
@@ -307,5 +307,8 @@ boxplot_evolucion <- ggplot(tabla_limpia, aes(x = income, y = deuda_pbi, fill = 
                   max.overlaps = 15 
   ) +
   paleta_ingresos()
-#MOSTRAR GRAFICO
-print(boxplot_evolucion)
+
+guardar_grafico(boxplot_evolucion, "boxplot_evolucion")
+
+
+
